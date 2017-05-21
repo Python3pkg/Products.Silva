@@ -101,13 +101,13 @@ class EmailQueueTransaction(threading.local):
     def __iter__(self):
         members = set()
         for queue in self._queues:
-            members |= set(queue.iterkeys())
+            members |= set(queue.keys())
         for member in members:
             message_dict = {}
             for queue in self._queues:
                 messages = queue.get(member)
                 if messages is not None:
-                    for from_member, message_list in messages.iteritems():
+                    for from_member, message_list in messages.items():
                         message_dict.setdefault(
                             from_member, []).extend(message_list)
             yield (member, message_dict)
@@ -202,7 +202,7 @@ class EmailMessageService(SilvaService):
             # but this can be assumed here per se.
             common_subject=None
             reply_to = {}
-            for from_memberid, messages in message_dict.items():
+            for from_memberid, messages in list(message_dict.items()):
                 logger.debug("From memberid: %s " % from_memberid)
                 from_member = get_member(from_memberid)
                 if from_member is None:
@@ -237,7 +237,7 @@ class EmailMessageService(SilvaService):
             if common_subject is not None:
                 header['Subject'] = common_subject
             if reply_to:
-                header['Reply-To'] = ', '.join(reply_to.keys())
+                header['Reply-To'] = ', '.join(list(reply_to.keys()))
                 # XXX set from header ?
             self._send_email(to_email, text, header=header)
 
@@ -261,17 +261,17 @@ class EmailMessageService(SilvaService):
         if not self._enabled:
             return
         header['To'] = toaddr
-        if not header.has_key('From'):
+        if 'From' not in header:
             header['From'] = self._fromaddr
-        if not header.has_key('Sender'):
+        if 'Sender' not in header:
             header['Sender'] = self._fromaddr
         header['Content-Type'] = 'text/plain; charset=UTF-8'
 
-        msg_lines = [ '%s: %s' % (k, v) for k, v in header.items() ]
+        msg_lines = [ '%s: %s' % (k, v) for k, v in list(header.items()) ]
         msg_lines.append('')
         msg_lines.append(msg)
         msg = '\r\n'.join(msg_lines)
-        if isinstance(msg, unicode):
+        if isinstance(msg, str):
             msg = msg.encode('UTF-8')
 
         # Send the email using the mailhost
@@ -282,12 +282,12 @@ InitializeClass(EmailMessageService)
 
 class IEmailMessageSettings(interface.Interface):
     _enabled = schema.Bool(
-        title=_(u'Enable'),
-        description=_(u'Send emails when asked to.'),
+        title=_('Enable'),
+        description=_('Send emails when asked to.'),
         required=True)
     _fromaddr = schema.TextLine(
-        title=_(u"From Address"),
-        description=_(u'Email address used to send messages.'),
+        title=_("From Address"),
+        description=_('Email address used to send messages.'),
         required=True)
 
 
@@ -296,9 +296,9 @@ class EmailMessageSettings(silvaforms.ZMIForm):
     grok.require('zope2.ViewManagementScreens')
     grok.name('manage_settings')
 
-    label = _(u"Messaging configuration")
-    description = _(u"Configure settings for email messaging between members. "
-                    u"The default MailHost service is used to send messages.")
+    label = _("Messaging configuration")
+    description = _("Configure settings for email messaging between members. "
+                    "The default MailHost service is used to send messages.")
     ignoreContent = False
     fields = silvaforms.Fields(IEmailMessageSettings)
     actions = silvaforms.Actions(silvaforms.EditAction())
@@ -307,9 +307,9 @@ class EmailMessageSettings(silvaforms.ZMIForm):
 class EmailMessageConfiguration(silvaforms.ConfigurationForm):
     grok.context(EmailMessageService)
 
-    label = _(u"Messaging configuration")
-    description = _(u"Configure settings for email messaging between members. "
-                    u"The default MailHost service is used to send messages.")
+    label = _("Messaging configuration")
+    description = _("Configure settings for email messaging between members. "
+                    "The default MailHost service is used to send messages.")
     fields = silvaforms.Fields(IEmailMessageSettings)
     actions = silvaforms.Actions(
         silvaforms.CancelConfigurationAction(),

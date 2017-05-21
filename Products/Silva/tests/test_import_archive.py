@@ -129,14 +129,14 @@ class ArchiveFileImportTestCase(unittest.TestCase):
         importer = IArchiveFileImporter(folder)
         with self.layer.open_fixture('test1.zip') as archive:
             succeeded, failed = importer.importArchive(
-                archive, assettitle=u'Daarhelemali')
+                archive, assettitle='Daarhelemali')
 
         self.assertItemsEqual(failed, [])
         self.assertEqual(
-            u'Daarhelemali',
+            'Daarhelemali',
             folder['testzip']['bar']['image2.jpg'].get_title())
         self.assertEqual(
-            u'Daarhelemali',
+            'Daarhelemali',
             folder['testzip']['foo']['bar']['baz']['image5.jpg'].get_title())
 
     def test_import_no_recreate_directory(self):

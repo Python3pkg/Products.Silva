@@ -23,11 +23,11 @@ from zeam.form import silva as silvaforms
 def sort_order_source():
     orders = []
     for key, title in [
-        ('silva', _(u'Silva folder order')),
-        ('alpha', _(u'Alphabetically')),
-        ('reversealpha', _(u'Reverse alphabetically')),
-        ('chronmod', _(u'Chronologically by modification date')),
-        ('rchronmod', _(u'Reverse chronologically by modification date'))]:
+        ('silva', _('Silva folder order')),
+        ('alpha', _('Alphabetically')),
+        ('reversealpha', _('Reverse alphabetically')),
+        ('chronmod', _('Chronologically by modification date')),
+        ('rchronmod', _('Reverse chronologically by modification date'))]:
         orders.append(SimpleTerm(value=key, token=key, title=title))
     return SimpleVocabulary(orders)
 
@@ -47,47 +47,47 @@ def silva_content_types(context):
 
 class IAutoTOCSchema(ITitledContent):
     _local_types = schema.Set(
-        title=_(u"Types to list"),
+        title=_("Types to list"),
         description=_(
-            u"Select here the content types you wish to see in "
-            u"the table of content. You need to selected container types "
-            u"(e.g. Folder and Publication) in order for the TOC to "
-            u"display their contents."),
+            "Select here the content types you wish to see in "
+            "the table of content. You need to selected container types "
+            "(e.g. Folder and Publication) in order for the TOC to "
+            "display their contents."),
         value_type=schema.Choice(source=silva_content_types),
         default=set(['Silva Document', 'Silva Folder', 'Silva Publication']),
         required=True)
     _toc_depth = schema.Int(
-        title=_(u"Depth"),
+        title=_("Depth"),
         description=_(
-            u"The depth to which the Table of Contents will be rendered "
-            u"(-1 means unlimited depth.)"),
+            "The depth to which the Table of Contents will be rendered "
+            "(-1 means unlimited depth.)"),
         default=-1,
         min=-1,
         max=99,
         required=True)
     _display_desc_flag = schema.Bool(
-        title=_(u"Display description"),
+        title=_("Display description"),
         description=_(
-            u"If selected, each item displayed will include its title "
-            u"and metadata description, if available. "),
+            "If selected, each item displayed will include its title "
+            "and metadata description, if available. "),
         default=False,
         required=True)
     _show_icon = schema.Bool(
         title=_("Show icon"),
         description=_(
-            u"If selected, each item displayed will include its icon. "),
+            "If selected, each item displayed will include its icon. "),
         default=False,
         required=True)
     _show_container_link = schema.Bool(
         title=_("Show container link"),
         description=_(
-            u"If selected, there will be a link to the container "
-            u"(as an H3) before the TOC list."),
+            "If selected, there will be a link to the container "
+            "(as an H3) before the TOC list."),
         default=False,
         required=True)
     _sort_order = schema.Choice(
-        title=_(u"Sort order"),
-        description=_(u"The order items in a container will be sorted"),
+        title=_("Sort order"),
+        description=_("The order items in a container will be sorted"),
         source=sort_order_source,
         default='silva',
         required=True)
@@ -102,7 +102,7 @@ class AutoTOCAddForm(silvaforms.SMIAddForm):
     """Add an Auto TOC.
     """
     grok.context(IAutoTOC)
-    grok.name(u'Silva AutoTOC')
+    grok.name('Silva AutoTOC')
 
     fields = silvaforms.Fields(IAutoTOCSchema)
 

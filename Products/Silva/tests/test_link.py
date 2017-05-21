@@ -49,7 +49,7 @@ class LinkTestCase(unittest.TestCase):
         self.assertEqual(link.get_relative(), False)
         self.assertEqual(link.get_target(), None)
         reference = getUtility(IReferenceService).get_reference(
-            link, name=u"link")
+            link, name="link")
         self.assertEqual(reference, None)
 
         with self.layer.get_browser() as browser:
@@ -78,7 +78,7 @@ class LinkTestCase(unittest.TestCase):
             aq_chain(link.get_target()),
             aq_chain(self.root.test))
         reference = getUtility(IReferenceService).get_reference(
-            link, name=u"link")
+            link, name="link")
         self.assertNotEqual(reference, None)
         self.assertEqual(reference.target, self.root.test)
 
@@ -107,7 +107,7 @@ class LinkTestCase(unittest.TestCase):
         # If you set the target to 0 the reference should be gone
         link.set_target(0)
         reference = getUtility(IReferenceService).get_reference(
-            link, name=u"link")
+            link, name="link")
         self.assertEqual(reference, None)
 
     def test_broken_relative_link(self):

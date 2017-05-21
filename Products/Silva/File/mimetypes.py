@@ -2,7 +2,7 @@
 # Copyright (c) 2009-2013 Infrae. All rights reserved.
 # See also LICENSE.txt
 
-from __future__ import absolute_import
+
 
 import logging
 import os.path
@@ -150,7 +150,7 @@ try:
 
     libmagic_path = ctypes.util.find_library('magic')
     if libmagic_path is None:
-        raise ImportError(u"libmagic not available")
+        raise ImportError("libmagic not available")
     libmagic = ctypes.CDLL(libmagic_path)
 
     magic_t = ctypes.c_void_p
@@ -215,7 +215,7 @@ try:
                 return mimetype, encoding
             except MagicException as error:
                 logger.error(
-                    u"Error while detecting mimetype for a buffer: %s",
+                    "Error while detecting mimetype for a buffer: %s",
                     str(error))
                 return None, None
 
@@ -232,7 +232,7 @@ try:
                 return mimetype, encoding
             except MagicException as error:
                 logger.error(
-                    u"Error while detecting mimetype for a file: %s, %s",
+                    "Error while detecting mimetype for a file: %s, %s",
                     str(error), filename)
                 return None, None
 
@@ -266,7 +266,7 @@ def MimeTypeClassifierFactory():
                 break
         else:
             raise RuntimeError(
-                u"Cannot find a mime.types file. "
-                u"Please add a configuration entry pointing to one.")
+                "Cannot find a mime.types file. "
+                "Please add a configuration entry pointing to one.")
     logger.warn('Using mime.types from %s', mime_types)
     return MimeTypeClassifier(mime_types=mime_types, magic_file=magic_file)

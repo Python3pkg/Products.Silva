@@ -29,7 +29,7 @@ class Filter(object):
         return True
 
     def __call__(self, contents):
-        return filter(self.filter, contents)
+        return list(filter(self.filter, contents))
 
 
 class FilteringRegistry(object):

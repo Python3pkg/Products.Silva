@@ -114,7 +114,7 @@ else
             'hour': lambda d: d.hour,
             'min': lambda d: d.minute}
 
-        for name, callback in mapping.items():
+        for name, callback in list(mapping.items()):
             control = form.get_control(".".join([prefix, name]))
             control.value = callback(dt)
 

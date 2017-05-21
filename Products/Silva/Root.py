@@ -43,16 +43,16 @@ class IQuotaRootManager(interface.Interface):
     """Describe a quota for a Silva root.
     """
     identifier = schema.TextLine(
-        title=_(u"Site"),
+        title=_("Site"),
         readonly=True,
         required=True)
     quota = schema.Int(
-        title=_(u"Site quota"),
+        title=_("Site quota"),
         min=-1,
         default=-1,
         required=True)
     used = schema.Float(
-        title=_(u'Used space'),
+        title=_('Used space'),
         min=-1.0,
         readonly=True,
         required=True)
@@ -62,17 +62,17 @@ class ISilvaRootAddFields(interface.Interface):
     """Describe an add form for a new Silva root.
     """
     identifier = silvaschema.ID(
-        title=_(u"Site identifier"),
+        title=_("Site identifier"),
         required=True)
     title = schema.TextLine(
-        title=_(u"Site title"),
+        title=_("Site title"),
         required=False)
     add_search = schema.Bool(
-        title=_(u"Add search functionality?"),
+        title=_("Add search functionality?"),
         default=True,
         required=False)
     add_documentation = schema.Bool(
-        title=_(u"Add user documentation?"),
+        title=_("Add user documentation?"),
         default=True,
         required=False)
 
@@ -94,7 +94,7 @@ class ZopeWelcomePage(silvaforms.ZMIForm):
             'View Management Screens', self.context)
 
     @silvaforms.action(
-        _(u"Authenticate first to add a new site"),
+        _("Authenticate first to add a new site"),
         identifier='login',
         available=lambda form:not form.is_manager())
     def login(self):
@@ -102,7 +102,7 @@ class ZopeWelcomePage(silvaforms.ZMIForm):
             raise Unauthorized("You must authenticate to add a new Silva Site")
 
     @silvaforms.action(
-        _(u"Add a new site"),
+        _("Add a new site"),
         identifier='add_site',
         available=lambda form:form.is_manager())
     def add_site(self):
@@ -114,7 +114,7 @@ class ZopeWelcomePage(silvaforms.ZMIForm):
             data.getDefault('title'))
         root = self.context._getOb(data['identifier'])
         getUtility(IMessageService).send(
-            _(u"New Silva site ${identifier} added.",
+            _("New Silva site ${identifier} added.",
               mapping={'identifier': data['identifier']}),
             self.request)
 
@@ -171,7 +171,7 @@ class QuotaRootFactory(object):
 
 
 class SetQuotaAction(silvaforms.Action):
-    title = _(u'Set Quota')
+    title = _('Set Quota')
 
     def __call__(self, form, quota, line):
         data, errors = line.extractData(form.tableFields)
@@ -185,9 +185,9 @@ class ManageQuotaRootForm(silvaforms.ZMISubTableForm):
     grok.context(Application)
     grok.view(ManageSiteForm)
 
-    label = _(u'Manage sites')
-    description = _(u'Modify the space (in MB) allocated to a complete Silva '
-                    u'site. This setting is not modifiable from within the site.')
+    label = _('Manage sites')
+    description = _('Modify the space (in MB) allocated to a complete Silva '
+                    'site. This setting is not modifiable from within the site.')
     ignoreContent = False
     batchSize = 25
     batchItemFactory = QuotaRootFactory
@@ -255,7 +255,7 @@ class Root(Publication):
         """Don't do anything here. Can't do this with root.
         """
         raise ContentError(
-            _(u"Root cannot be converted to folder."), self)
+            _("Root cannot be converted to folder."), self)
 
     security.declareProtected(SilvaPermissions.ApproveSilvaContent,
                               'to_publication')
@@ -263,7 +263,7 @@ class Root(Publication):
         """Don't do anything here. Can't do this with root.
         """
         raise ContentError(
-            _(u"Root cannot be converted to publication."), self)
+            _("Root cannot be converted to publication."), self)
 
     security.declareProtected(SilvaPermissions.ChangeSilvaAccess,
                               'add_silva_addable_forbidden')
@@ -357,8 +357,8 @@ def manage_addRoot(self, id, title, REQUEST=None):
     """
     if not title:
         title = id
-    if not isinstance(title, unicode):
-        title = unicode(title, 'latin1')
+    if not isinstance(title, str):
+        title = str(title, 'latin1')
     id = str(id)
     container = self.Destination()
 

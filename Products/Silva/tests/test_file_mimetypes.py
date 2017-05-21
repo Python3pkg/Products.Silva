@@ -3,7 +3,7 @@
 # See also LICENSE.txt
 
 import unittest
-from cStringIO import StringIO
+from io import StringIO
 
 from zope.component import queryUtility
 from zope.interface.verify import verifyObject

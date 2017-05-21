@@ -156,11 +156,11 @@ class VersionedObject(Versioning, SilvaObject, ViewableObject):
         if not checkPermission('silva.ApproveSilvaContent', self):
             if self.is_published():
                 raise ContentError(
-                    _(u"Content is published."),
+                    _("Content is published."),
                     self)
             if self.is_approved():
                 raise ContentError(
-                    _(u"Content is approved."),
+                    _("Content is approved."),
                     self)
 
 InitializeClass(VersionedObject)

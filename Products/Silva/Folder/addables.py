@@ -31,7 +31,7 @@ class AddableContents(grok.Adapter):
         check_permission = getSecurityManager().checkPermission
         can_add = lambda name: check_permission('Add %ss' % name, self.context)
 
-        return filter(can_add, self.get_container_addables(require))
+        return list(filter(can_add, self.get_container_addables(require)))
 
     def get_container_addables(self, require=None):
         all_addables = self.get_all_addables(require)
@@ -40,7 +40,7 @@ class AddableContents(grok.Adapter):
         locally_addables = self._get_locally_addables()
         if locally_addables is not None:
             is_locally_addable = lambda name: name in locally_addables
-            return filter(is_locally_addable, all_addables)
+            return list(filter(is_locally_addable, all_addables))
 
         return all_addables
 
@@ -52,10 +52,10 @@ class AddableContents(grok.Adapter):
                 requires = require
         else:
             requires = list(self.REQUIRES)
-        return map(
+        return list(map(
             operator.itemgetter('name'),
-            filter(self._is_installed,
-                   extensionRegistry.get_addables(requires=requires)))
+            list(filter(self._is_installed,
+                   extensionRegistry.get_addables(requires=requires)))))
 
     def _get_locally_addables(self):
         container = self.context

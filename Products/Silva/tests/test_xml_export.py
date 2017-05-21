@@ -198,7 +198,7 @@ class XMLExportTestCase(SilvaXMLTestCase):
             [])
         self.assertEqual(
             exporter.getProblems(),
-            [(u'Content refers to an another content outside of the export (../link).', version)])
+            [('Content refers to an another content outside of the export (../link).', version)])
 
     def test_ghost_folder(self):
         """Export a ghost folder.
@@ -410,7 +410,7 @@ class XMLExportVersionsTestCase(SilvaXMLTestCase):
             [(('', 'root', 'folder', 'file'), '1')])
         self.assertEqual(
             exporter.getProblems(),
-            [(u'No versions are exportable for this content.', link)])
+            [('No versions are exportable for this content.', link)])
 
     def test_link_closed_only_previewable(self):
         """Export only the previewable version of a link that have

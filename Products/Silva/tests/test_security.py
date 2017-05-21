@@ -329,8 +329,8 @@ class AcquiredUserAccessSecurityTestCase(unittest.TestCase):
 
         authorizations = access.get_defined_authorizations()
         self.assertEqual(len(authorizations), 2)
-        self.assertTrue('viewer' in authorizations.keys())
-        self.assertTrue('reader' in authorizations.keys())
+        self.assertTrue('viewer' in list(authorizations.keys()))
+        self.assertTrue('reader' in list(authorizations.keys()))
 
         authorization = authorizations['viewer']
         self.assertEqual(authorization.local_role, None)
@@ -349,7 +349,7 @@ class AcquiredUserAccessSecurityTestCase(unittest.TestCase):
 
         authorizations = access.get_defined_authorizations(dont_acquire=True)
         self.assertEqual(len(authorizations), 1)
-        self.assertTrue('reader' in authorizations.keys())
+        self.assertTrue('reader' in list(authorizations.keys()))
 
         authorization = authorizations['reader']
         self.assertEqual(authorization.local_role, 'Manager')
@@ -381,11 +381,11 @@ class AcquiredUserAccessSecurityTestCase(unittest.TestCase):
         authorizations = access.get_authorizations(
             ['reader', 'viewer', 'editor', 'hacker'])
         self.assertEqual(len(authorizations), 3)
-        self.assertTrue('reader' in authorizations.keys())
-        self.assertTrue('viewer' in authorizations.keys())
-        self.assertTrue('editor' in authorizations.keys())
-        self.assertFalse('manager' in authorizations.keys())
-        self.assertFalse('hacker' in authorizations.keys())
+        self.assertTrue('reader' in list(authorizations.keys()))
+        self.assertTrue('viewer' in list(authorizations.keys()))
+        self.assertTrue('editor' in list(authorizations.keys()))
+        self.assertFalse('manager' in list(authorizations.keys()))
+        self.assertFalse('hacker' in list(authorizations.keys()))
 
         authorization = authorizations['reader']
         self.assertEqual(authorization.local_role, 'Manager')

@@ -29,13 +29,13 @@ class HauntedTestCase(unittest.TestCase):
         self.layer.login('editor')
 
         factory = self.root.manage_addProduct['Silva']
-        factory.manage_addMockupVersionedContent('document', u'Test Document')
-        factory.manage_addPublication('publication', u'Test Publication')
+        factory.manage_addMockupVersionedContent('document', 'Test Document')
+        factory.manage_addPublication('publication', 'Test Publication')
         factory.manage_addGhost('ghost', None, haunted=self.root.document)
-        factory.manage_addLink('link', u'Test Link')
+        factory.manage_addLink('link', 'Test Link')
 
         factory = self.root.publication.manage_addProduct['Silva']
-        factory.manage_addFolder('folder', u'Test Folder')
+        factory.manage_addFolder('folder', 'Test Folder')
 
     def test_get_haunting(self):
         # No adapter for non-content or containers objects

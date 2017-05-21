@@ -77,7 +77,7 @@ class GhostTestCase(unittest.TestCase):
 
         ghost = self.root.ghost.get_editable()
         reference = getUtility(IReferenceService).get_reference(
-            ghost, name=u"haunted")
+            ghost, name="haunted")
         self.assertTrue(verifyObject(IReferenceValue, reference))
         self.assertEqual(
             aq_chain(reference.target),
@@ -91,7 +91,7 @@ class GhostTestCase(unittest.TestCase):
             deleter(self.root.document)
 
         reference = getUtility(IReferenceService).get_reference(
-            ghost, name=u"haunted")
+            ghost, name="haunted")
         self.assertEqual(reference, None)
 
     def test_metadata(self):
@@ -119,36 +119,36 @@ class GhostTestCase(unittest.TestCase):
         self.assertNotEqual(ghost_binding, None)
         self.assertEqual(
             ghost_binding.get('silva-content', 'maintitle'),
-            u"Document")
+            "Document")
         self.assertEqual(
             service.getMetadataValue(ghost, 'silva-content', 'maintitle'),
-            u"Document")
+            "Document")
 
         # You can't change the value
         with self.assertRaises(ReadOnlyError):
-            ghost_binding.setValues('silva-content', {'maintitle': u'Ghost'})
+            ghost_binding.setValues('silva-content', {'maintitle': 'Ghost'})
 
         # Nothing changed
         ghost_binding = service.getMetadata(ghost)
         self.assertEqual(
             ghost_binding.get('silva-content', 'maintitle'),
-            u"Document")
+            "Document")
         self.assertEqual(
             service.getMetadataValue(ghost, 'silva-content', 'maintitle'),
-            u"Document")
+            "Document")
 
         # Update document metadata
         document_binding = service.getMetadata(document.get_viewable())
-        document_binding.setValues('silva-content', {'maintitle': u"Changed"})
+        document_binding.setValues('silva-content', {'maintitle': "Changed"})
 
         # You should see the values from the ghost point of view.
         ghost_binding = service.getMetadata(ghost)
         self.assertEqual(
             ghost_binding.get('silva-content', 'maintitle'),
-            u"Changed")
+            "Changed")
         self.assertEqual(
             service.getMetadataValue(ghost, 'silva-content', 'maintitle'),
-            u"Changed")
+            "Changed")
 
     def test_version_metadata(self):
         """If you ask metadata about a ghost version, you should get
@@ -175,36 +175,36 @@ class GhostTestCase(unittest.TestCase):
         self.assertNotEqual(ghost_binding, None)
         self.assertEqual(
             ghost_binding.get('silva-content', 'maintitle'),
-            u"Document")
+            "Document")
         self.assertEqual(
             service.getMetadataValue(ghost, 'silva-content', 'maintitle'),
-            u"Document")
+            "Document")
 
         # You can't change the value.
         with self.assertRaises(ReadOnlyError):
-            ghost_binding.setValues('silva-content', {'maintitle': u'Ghost'})
+            ghost_binding.setValues('silva-content', {'maintitle': 'Ghost'})
 
         # Nothing changed.
         ghost_binding = service.getMetadata(ghost)
         self.assertEqual(
             ghost_binding.get('silva-content', 'maintitle'),
-            u"Document")
+            "Document")
         self.assertEqual(
             service.getMetadataValue(ghost, 'silva-content', 'maintitle'),
-            u"Document")
+            "Document")
 
         # Update document metadata
         document_binding = service.getMetadata(document.get_viewable())
-        document_binding.setValues('silva-content', {'maintitle': u"Changed"})
+        document_binding.setValues('silva-content', {'maintitle': "Changed"})
 
         # You should see the values from the ghost point of view.
         ghost_binding = service.getMetadata(ghost)
         self.assertEqual(
             ghost_binding.get('silva-content', 'maintitle'),
-            u"Changed")
+            "Changed")
         self.assertEqual(
             service.getMetadataValue(ghost, 'silva-content', 'maintitle'),
-            u"Changed")
+            "Changed")
 
     def test_set_title(self):
         """Test ghost set_title. It should just trigger an error.

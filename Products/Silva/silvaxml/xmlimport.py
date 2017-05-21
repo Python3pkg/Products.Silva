@@ -170,7 +170,7 @@ class GhostVersionHandler(handlers.SilvaVersionHandler):
             version = self.result()
             haunted = self.getData('haunted')
             if not haunted:
-                importer.reportProblem(_(u'Missing ghost target.'), version)
+                importer.reportProblem(_('Missing ghost target.'), version)
             else:
 
                 def set_target(target):
@@ -215,7 +215,7 @@ class GhostFolderHandler(handlers.SilvaContainerHandler):
             haunted = self.getData('haunted')
             importer = self.getExtra()
             if haunted is None:
-                importer.reportProblem(u'Missing ghost folder target.', folder)
+                importer.reportProblem('Missing ghost folder target.', folder)
             else:
 
                 def set_target(target):
@@ -402,7 +402,7 @@ class GhostAssetHandler(handlers.SilvaHandler):
             asset = self.result()
             haunted = self.getData('haunted')
             if not haunted:
-                importer.reportProblem(_(u'Missing ghost target.'), asset)
+                importer.reportProblem(_('Missing ghost target.'), asset)
             else:
 
                 def set_target(target):

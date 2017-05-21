@@ -19,8 +19,7 @@ class FolderCatalogTestCase(unittest.TestCase):
             factory.manage_addFolder('folder', 'Data Folder')
 
     def search(self, **kwargs):
-        return map(lambda b: (b.getPath(), b.publication_status),
-                   self.root.service_catalog(**kwargs))
+        return [(b.getPath(), b.publication_status) for b in self.root.service_catalog(**kwargs)]
 
     def test_unapproved(self):
         """If a folder doesn't have an index it is unapproved in the

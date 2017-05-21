@@ -2,7 +2,7 @@
 # Copyright (c) 2003-2013 Infrae. All rights reserved.
 # See also LICENSE.txt
 
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import hashlib
 
 from five import grok
@@ -43,7 +43,7 @@ class GravatarIcon(Icon):
             if email:
                 return (GRAVATAR_URL +
                         hashlib.md5(email.lower()).hexdigest() +
-                        urllib.urlencode({'default': 'default', 'size': 16}))
+                        urllib.parse.urlencode({'default': 'default', 'size': 16}))
         return super(GravatarIcon, self).url(resolver, content)
 
 
@@ -184,8 +184,8 @@ class SimpleMemberService(SilvaService):
     def find_members(self, search_string, location=None):
         if len(search_string) < 2:
             raise MemberLookupError(
-                _(u"The search input is too short. "
-                  u"Please enter two or more characters."))
+                _("The search input is too short. "
+                  "Please enter two or more characters."))
         # XXX: get_valid_userids is evil: will break with other user
         # folder implementations.
         userids = self.get_valid_userids()

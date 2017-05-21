@@ -52,7 +52,7 @@ class ContainerPolicyRegistry(SilvaService):
         'Access contents information', 'list_policies')
     def list_policies(self):
         sorted_policies = []
-        for key, value in self.__policies.items():
+        for key, value in list(self.__policies.items()):
             insort_right(sorted_policies, _Policy(key, value[1]))
         return [p._name for p in sorted_policies]
 

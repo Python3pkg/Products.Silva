@@ -130,7 +130,7 @@ class GhostBase(object):
         """
         if title is not None:
             raise ContentError(
-                _(u"A ghost title is immutable."),
+                _("A ghost title is immutable."),
                 self.get_silva_object())
 
     security.declareProtected(
@@ -142,7 +142,7 @@ class GhostBase(object):
         if content is not None:
             if not IPublishable.providedBy(content) or content.is_published():
                 return content.get_title()
-        return _(u"Ghost target is broken")
+        return _("Ghost target is broken")
 
     security.declareProtected(
         SilvaPermissions.AccessContentsInformation, 'get_short_title')
@@ -153,7 +153,7 @@ class GhostBase(object):
         if content is not None:
             if not IPublishable.providedBy(content) or content.is_published():
                 return content.get_short_title()
-        return _(u"Ghost target is broken")
+        return _("Ghost target is broken")
 
     security.declareProtected(
         SilvaPermissions.AccessContentsInformation, 'get_title_editable')
@@ -163,7 +163,7 @@ class GhostBase(object):
         content = self.get_haunted()
         if content is not None:
             return content.get_title_editable()
-        return _(u"Ghost target is broken")
+        return _("Ghost target is broken")
 
     security.declareProtected(
         SilvaPermissions.AccessContentsInformation, 'get_short_title_editable')
@@ -173,7 +173,7 @@ class GhostBase(object):
         content = self.get_haunted()
         if content is not None:
             return content.get_short_title_editable()
-        return _(u"Ghost target is broken")
+        return _("Ghost target is broken")
 
     def _get_haunted_factories(self, auto_delete=False):
         # Give the possibilties to override the selection of reference
@@ -190,7 +190,7 @@ class GhostBase(object):
         service = getUtility(IReferenceService)
         factory = self._get_haunted_factories(auto_delete)
         reference = service.get_reference(
-            aq_inner(self), name=u"haunted", add=True, factory=factory)
+            aq_inner(self), name="haunted", add=True, factory=factory)
         if isinstance(content, int):
             reference.set_target_id(content)
         else:
@@ -199,7 +199,7 @@ class GhostBase(object):
     security.declareProtected(SilvaPermissions.View, 'get_haunted')
     def get_haunted(self):
         service = getUtility(IReferenceService)
-        reference = service.get_reference(aq_inner(self), name=u"haunted")
+        reference = service.get_reference(aq_inner(self), name="haunted")
         if reference is not None:
             return reference.target
         return None

@@ -203,4 +203,4 @@ def read_file(id, info, folder):
         f.close()
 
 if __name__ == '__main__':
-    print """This module is not an installer. You don't have to run it."""
+    print("""This module is not an installer. You don't have to run it.""")

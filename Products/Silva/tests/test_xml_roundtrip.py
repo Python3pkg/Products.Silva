@@ -2,7 +2,7 @@
 # Copyright (c) 2002-2013 Infrae. All rights reserved.
 # See also LICENSE.txt
 
-from cStringIO import StringIO
+from io import StringIO
 from zipfile import ZipFile
 import unittest
 

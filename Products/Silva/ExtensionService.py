@@ -279,10 +279,10 @@ class IPartialUpgrade(interface.Interface):
     """Data needed to do a partial upgrade.
     """
     path = schema.TextLine(
-        title=_(u"Absolute path to object to upgrade"),
+        title=_("Absolute path to object to upgrade"),
         required=True)
     version = schema.TextLine(
-        title=_(u"Current Silva version of the object"),
+        title=_("Current Silva version of the object"),
         required=True)
 
 
@@ -292,17 +292,17 @@ class PartialUpgradesForm(silvaforms.ZMIForm):
     """
     grok.name('manage_partialUpgrade')
     fields = silvaforms.Fields(IPartialUpgrade)
-    label = _(u"Upgrade site")
-    description = _(u"Below you find a form that allows you to specify "
-                    u"an object to upgrade, and which version the object "
-                    u"is in now. When you enter values in those fields and "
-                    u"press the 'upgrade' button, Silva will try to upgrade "
-                    u"the object to get it in proper shape for the current "
-                    u"Silva version. Note that this functionality is "
-                    u"experimental, and it is known that performing a "
-                    u"partial upgrade on an object may fail and may "
-                    u"even (in some situations) cause the object to "
-                    u"become unusable.")
+    label = _("Upgrade site")
+    description = _("Below you find a form that allows you to specify "
+                    "an object to upgrade, and which version the object "
+                    "is in now. When you enter values in those fields and "
+                    "press the 'upgrade' button, Silva will try to upgrade "
+                    "the object to get it in proper shape for the current "
+                    "Silva version. Note that this functionality is "
+                    "experimental, and it is known that performing a "
+                    "partial upgrade on an object may fail and may "
+                    "even (in some situations) cause the object to "
+                    "become unusable.")
 
     @silvaforms.action(_("Upgrade"))
     def upgrade(self):
@@ -316,14 +316,14 @@ class PartialUpgradesForm(silvaforms.ZMIForm):
         content = root.restrictedTraverse(path)
         self.context.upgrade_content(
             content, version, root.get_silva_software_version())
-        self.status = _(u"Content upgrade succeeded. See event log for details")
+        self.status = _("Content upgrade succeeded. See event log for details")
 
 
 class IPartialReindex(interface.Interface):
     """Information needed to partially reindex a site.
     """
     path = schema.TextLine(
-        title=_(u"Absolute path to reindex"),
+        title=_("Absolute path to reindex"),
         required=True)
 
 
@@ -334,9 +334,9 @@ class PartialReindexForm(silvaforms.ZMIForm):
     fields = silvaforms.Fields(IPartialReindex)
     fields['path'].defaultValue = lambda form: '/'.join(
         form.context.get_root().getPhysicalPath())
-    label = _(u"Reindex site")
-    description = _(u"Reindex a subtree of the site in the Silva Catalog."
-                    u"For big trees this may take a long time.")
+    label = _("Reindex site")
+    description = _("Reindex a subtree of the site in the Silva Catalog."
+                    "For big trees this may take a long time.")
 
     @silvaforms.action(_("Reindex"))
     def reindex(self):
@@ -347,9 +347,9 @@ class PartialReindexForm(silvaforms.ZMIForm):
         try:
             self.context.reindex_subtree(path)
         except KeyError:
-            self.status = _(u"Invalid path")
+            self.status = _("Invalid path")
         else:
-            self.status = _(u"Partial catalog refreshed")
+            self.status = _("Partial catalog refreshed")
 
 
 class ManageExtensionsMixin(object):
@@ -357,35 +357,35 @@ class ManageExtensionsMixin(object):
 
     def refresh_all(self):
         self.context.refresh_all()
-        return _(u'Silva and all installed extensions have been refreshed')
+        return _('Silva and all installed extensions have been refreshed')
 
     def refresh_catalog(self):
         self.context.reindex_all()
-        return _(u'Catalog refreshed')
+        return _('Catalog refreshed')
 
     def disable_quota_subsystem(self):
         self.context.disable_quota_subsystem()
-        return _(u'Quota sub-system disabled')
+        return _('Quota sub-system disabled')
 
     def enable_quota_subsystem(self):
         self.context.enable_quota_subsystem()
-        return _(u'Quota sub-system enabled')
+        return _('Quota sub-system enabled')
 
     def purge_old_versions(self):
         root = self.context.get_root()
         purge_old_versions(root)
-        return _(u'Old version of documents purged')
+        return _('Old version of documents purged')
 
     def upgrade_all(self):
         root = self.context.get_root()
         from_version = root.get_silva_content_version()
         to_version = root.get_silva_software_version()
         self.context.upgrade_content(root, from_version, to_version)
-        return  _(u'Content upgrade succeeded. See log in Logs tab for details')
+        return  _('Content upgrade succeeded. See log in Logs tab for details')
 
     def install_documentation(self):
         install_documentation(self.context.get_root(), self.request)
-        return _(u'Documentation installed')
+        return _('Documentation installed')
 
     def install(self, name):
         self.context.install(name)
@@ -431,7 +431,7 @@ class ManageExtensionsMixin(object):
                 yield {
                     'info': extension,
                     'is_installed': extension.installer.is_installed(root, extension),
-                    'dependencies': map(get_extension, extension.depends)}
+                    'dependencies': list(map(get_extension, extension.depends))}
 
     def get_system_extensions(self):
         """Return system extensions

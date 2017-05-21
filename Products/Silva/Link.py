@@ -63,7 +63,7 @@ class LinkVersion(Version):
         if self._relative:
             service = getUtility(IReferenceService)
             reference = service.get_reference(
-                aq_inner(self), name=u'link')
+                aq_inner(self), name='link')
             if reference is not None:
                 return reference.target
         return None
@@ -86,11 +86,11 @@ class LinkVersion(Version):
             target = get_content_id(target)
         if target:
             reference = service.get_reference(
-                aq_inner(self), name=u'link', add=True)
+                aq_inner(self), name='link', add=True)
             reference.set_target_id(target)
         else:
             reference = service.delete_reference(
-                aq_inner(self), name=u'link')
+                aq_inner(self), name='link')
 
     security.declareProtected(
         SilvaPermissions.ChangeSilvaContent, 'set_url')
@@ -104,47 +104,47 @@ InitializeClass(LinkVersion)
 class ILinkSchema(ITitledContent):
 
     url = schema.URI(
-        title=_(u"URL"),
+        title=_("URL"),
         description=_(
-            u"If the link goes to an external resource, fill in the "
-            u"location, including the protocol, e.g. 'http://'."),
+            "If the link goes to an external resource, fill in the "
+            "location, including the protocol, e.g. 'http://'."),
         required=False)
 
     relative = schema.Bool(
-        title=_(u"Relative link"),
+        title=_("Relative link"),
         description=_(
-            u"If the link goes to an internal item in Silva, put a checkmark "
-            u"here and lookup the target below."),
+            "If the link goes to an internal item in Silva, put a checkmark "
+            "here and lookup the target below."),
         default=False,
         required=True)
 
     target = Reference(interfaces.ISilvaObject,
-        title=_(u"Target of relative link"),
+        title=_("Target of relative link"),
         description=_(
-            u"Make a reference to an internal item by looking it up."),
+            "Make a reference to an internal item by looking it up."),
         required=False)
 
     @interface.invariant
     def url_validation(content):
         if content.relative and not content.target:
             raise interface.Invalid(
-                _(u"Relative link selected without target."))
+                _("Relative link selected without target."))
         if not content.relative and not content.url:
             raise interface.Invalid(
-                _(u"Absolute link selected without URL. "
-                  u"If the link goes to an internal item in Silva, "
-                  u"put a checkmark in the relative link field."))
+                _("Absolute link selected without URL. "
+                  "If the link goes to an internal item in Silva, "
+                  "put a checkmark in the relative link field."))
 
 
 class LinkAddForm(silvaforms.SMIAddForm):
     """Add form for a link.
     """
     grok.context(interfaces.ILink)
-    grok.name(u'Silva Link')
+    grok.name('Silva Link')
 
     fields = silvaforms.Fields(ILinkSchema)
     fields['target'].referenceNotSetLabel = _(
-        u"Click the Lookup button to select an item to refer to.")
+        "Click the Lookup button to select an item to refer to.")
 
 
 class LinkEditForm(silvaforms.SMIEditForm):
@@ -154,7 +154,7 @@ class LinkEditForm(silvaforms.SMIEditForm):
 
     fields = silvaforms.Fields(ILinkSchema).omit('id')
     fields['target'].referenceNotSetLabel = _(
-        u"Click the Lookup button to select an item to refer to.")
+        "Click the Lookup button to select an item to refer to.")
 
 
 class LinkView(silvaviews.View):

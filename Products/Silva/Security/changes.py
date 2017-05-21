@@ -66,7 +66,7 @@ class ChangesTask(Task):
         login = getSecurityManager().getUser().getId()
         metadata = queryUtility(IMetadataService)
 
-        for change, created in self._changes.iteritems():
+        for change, created in self._changes.items():
             # Update author
             # XXX This could probably be done outside of the loop
             user = members.get_cached_member(login, location=change.content)

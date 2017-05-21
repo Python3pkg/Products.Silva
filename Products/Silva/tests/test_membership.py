@@ -90,12 +90,12 @@ class SimpleMembershipTestCase(unittest.TestCase):
         service = queryUtility(IMemberService)
         members = service.find_members('manager')
         self.assertItemsEqual(
-            map(lambda m: m.userid(), members),
+            [m.userid() for m in members],
             ['manager'])
 
         members = service.find_members('ed')
         self.assertItemsEqual(
-            map(lambda m: m.userid(), members),
+            [m.userid() for m in members],
             ['chiefeditor', 'editor'])
 
 

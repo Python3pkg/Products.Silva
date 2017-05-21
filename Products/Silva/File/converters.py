@@ -81,7 +81,7 @@ class WordConverter(Converter):
         # Need to report errors.
         if converted:
             try:
-                return unicode(converted, 'utf8')
+                return str(converted, 'utf8')
             except UnicodeDecodeError:
                 pass
         return None
@@ -110,7 +110,7 @@ class PDFConverter(Converter):
         # Need to report errors.
         if converted:
             try:
-                return unicode(converted, 'utf8')
+                return str(converted, 'utf8')
             except UnicodeDecodeError:
                 pass
         return None
@@ -134,7 +134,7 @@ class TextConverter(Converter):
         fp = None
         try:
             fp = open(filename, 'r')
-            return unicode(fp.read(), 'utf-8')
+            return str(fp.read(), 'utf-8')
         except (OSError, UnicodeDecodeError):
             return None
         finally:
@@ -142,6 +142,6 @@ class TextConverter(Converter):
 
     def convert_string(self, data):
         try:
-            return unicode(data, 'utf8')
+            return str(data, 'utf8')
         except UnicodeDecodeError:
             return None

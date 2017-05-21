@@ -57,7 +57,7 @@ class LinkVersionProducer(producers.SilvaProducer):
             if self.getOptions().external_rendering:
                 tag = 'url'
             self.startElement(tag)
-            self.characters(self.get_reference(u'link'))
+            self.characters(self.get_reference('link'))
             self.endElement(tag)
         else:
             self.startElement('url')
@@ -88,7 +88,7 @@ class GhostVersionProducer(producers.SilvaProducer):
     def sax(self):
         self.startElement('content', {'version_id': self.context.id})
         self.startElement('haunted')
-        self.characters(self.get_reference(u'haunted'))
+        self.characters(self.get_reference('haunted'))
         self.endElement('haunted')
         if self.getOptions().external_rendering:
             # Include an export of the haunted object, for external
@@ -110,7 +110,7 @@ class GhostFolderProducer(producers.SilvaProducer):
         self.startElement('ghost_folder', {'id': self.context.id})
         self.startElement('content')
         self.startElement('haunted')
-        self.characters(self.get_reference(u'haunted'))
+        self.characters(self.get_reference('haunted'))
         self.endElement('haunted')
         self.endElement('content')
         self.endElement('ghost_folder')
@@ -177,7 +177,7 @@ class GhostAssetProducer(producers.SilvaProducer):
     def sax(self):
         self.startElement('ghost_asset', {'id': self.context.id})
         self.startElement('haunted')
-        self.characters(self.get_reference(u'haunted'))
+        self.characters(self.get_reference('haunted'))
         self.endElement('haunted')
         self.endElement('ghost_asset')
 

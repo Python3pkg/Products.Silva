@@ -20,8 +20,8 @@ from silva.translations import translate as _
 class GhostView(silvaviews.View):
     grok.context(IGhost)
 
-    broken_message = _(u"This content is unavailable. "
-                       u"Please inform the site manager.")
+    broken_message = _("This content is unavailable. "
+                       "Please inform the site manager.")
 
     def render(self):
         haunted = self.content.get_haunted()
@@ -30,8 +30,8 @@ class GhostView(silvaviews.View):
         permission = self.is_preview and 'Read Silva content' or 'View'
         if not getSecurityManager().checkPermission(permission, haunted):
             raise Unauthorized(
-                u"You do not have permission to "
-                u"see the target of this ghost")
+                "You do not have permission to "
+                "see the target of this ghost")
         view = queryMultiAdapter((haunted, self.request), name="content.html")
         if view is None:
             return self.broken_message

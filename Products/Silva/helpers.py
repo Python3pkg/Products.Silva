@@ -3,7 +3,7 @@
 # See also LICENSE.txt
 
 # Python
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 # Zope
 from Acquisition import aq_parent
@@ -29,8 +29,8 @@ def add_and_edit(self, id, REQUEST, screen='manage_main'):
         u = self.DestinationURL()
     except:
         u = REQUEST['URL1']
-    if REQUEST.has_key('submit_edit'):
-        u = "%s/%s" % (u, urllib.quote(id))
+    if 'submit_edit' in REQUEST:
+        u = "%s/%s" % (u, urllib.parse.quote(id))
         REQUEST.RESPONSE.redirect(u+'/'+screen)
     else:
         REQUEST.RESPONSE.redirect(u+'/manage_main')
@@ -101,9 +101,7 @@ class SwitchClass(object):
                 {'id': oid, 'meta_type': omt}
                 if oid != obj.getId()
                 else {'id': oid, 'meta_type': obj.meta_type}
-                for oid, omt in map(
-                    lambda d: (d['id'], d['meta_type']),
-                    parent._objects)])
+                for oid, omt in [(d['id'], d['meta_type']) for d in parent._objects]])
             parent._setOb(obj.getId(), obj)
 
         notify(ObjectModifiedEvent(obj))

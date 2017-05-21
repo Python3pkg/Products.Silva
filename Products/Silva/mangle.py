@@ -197,10 +197,10 @@ class Id(object):
             maybe_id = ""
         if isinstance(maybe_id, str):
             try:
-                maybe_id = unicode(maybe_id, 'utf-8')
+                maybe_id = str(maybe_id, 'utf-8')
             except UnicodeError:
-                maybe_id = unicode(maybe_id, 'latin-1', 'replace')
-        if not isinstance(maybe_id, unicode):
+                maybe_id = str(maybe_id, 'latin-1', 'replace')
+        if not isinstance(maybe_id, str):
             raise ValueError("id must be str or unicode (%r)" % orig_id)
         self._context = context
         self._maybe_id = maybe_id
@@ -220,10 +220,10 @@ class Id(object):
         id, unused_title = Image.cookId(self._maybe_id, "", self._file)
         if isinstance(id, str):
             try:
-                id = unicode(id, 'utf-8')
+                id = str(id, 'utf-8')
             except UnicodeError:
                 pass
-        if isinstance(id, unicode):
+        if isinstance(id, str):
             id = id.encode('latin1', 'replace')
         id = string.translate(id, characters.char_transmap)
         self._maybe_id = id
@@ -266,7 +266,7 @@ class Id(object):
 
         if self._interface is not None:
             for interface, prefixes in \
-                    self._reserved_ids_for_interface.items():
+                    list(self._reserved_ids_for_interface.items()):
                 if self._interface.isOrExtends(interface):
                     if maybe_id in prefixes:
                         return self.RESERVED_FOR_CONTENT
@@ -312,36 +312,36 @@ class Id(object):
 
     def _status_to_string(self, status):
         if status == self.CONTAINS_BAD_CHARS:
-            return _(u'The id contains strange characters. It should only '
-                     u'contain letters, digits and ‘_’ or ‘-’ or ‘.’ '
-                     u'Spaces are not allowed and the id should start '
-                     u'with a letter or digit.')
+            return _('The id contains strange characters. It should only '
+                     'contain letters, digits and ‘_’ or ‘-’ or ‘.’ '
+                     'Spaces are not allowed and the id should start '
+                     'with a letter or digit.')
         elif status == self.RESERVED_PREFIX:
             prefix = str(self._maybe_id).split('_')[0]+'_'
-            return _(u"ids starting with ${prefix} are reserved for "
-                     u"internal use.",
+            return _("ids starting with ${prefix} are reserved for "
+                     "internal use.",
                      mapping={'prefix': prefix})
         elif status == self.RESERVED:
-            return _(u"The id ${id} is reserved for internal use.",
+            return _("The id ${id} is reserved for internal use.",
                      mapping={'id': self._maybe_id})
         elif status == self.IN_USE_CONTENT:
-            return _(u"There is already an object with the id ${id} in this "
-                     u"container.",
+            return _("There is already an object with the id ${id} in this "
+                     "container.",
                      mapping={'id': self._maybe_id})
         elif status == self.IN_USE_ASSET:
-            return _(u"There is already an asset with the id ${id} in this "
-                     u"container.", mapping={'id': self._maybe_id})
+            return _("There is already an asset with the id ${id} in this "
+                     "container.", mapping={'id': self._maybe_id})
         elif status == self.RESERVED_POSTFIX:
-            return _(u"The id ${id} ends with invalid characters.",
+            return _("The id ${id} ends with invalid characters.",
                      mapping={'id': self._maybe_id})
         elif status == self.IN_USE_ZOPE:
-            return _(u"The id ${id} is already in use by a Zope object.",
+            return _("The id ${id} is already in use by a Zope object.",
                      mapping={'id': self._maybe_id})
         elif status == self.RESERVED_FOR_CONTENT:
             return _("The id ${id} cannot be used for a content of this "
-                     u"type.", mapping={'id': self._maybe_id})
-        return _(u"(Internal Error): An invalid status ${status_code} occured "
-                 u"while checking the id ${id}.",
+                     "type.", mapping={'id': self._maybe_id})
+        return _("(Internal Error): An invalid status ${status_code} occured "
+                 "while checking the id ${id}.",
                  mapping={'status_code': status, 'id': self._maybe_id})
 
     def new(self):
@@ -355,7 +355,7 @@ class Id(object):
         """
         self._allow_dup = 1
         if not self.isValid():
-            raise ValueError, "The id %r is not valid" % (self._maybe_id, )
+            raise ValueError("The id %r is not valid" % (self._maybe_id, ))
         m = self._number_postfix.match(self._maybe_id)
         if m is None:
             new_id =  '%s2' % (self._maybe_id, )

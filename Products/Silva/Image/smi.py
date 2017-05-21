@@ -24,23 +24,23 @@ from zeam.form.base import NO_VALUE
 
 
 class IImageAddFields(ITitledContent):
-    image = silvaschema.Bytes(title=_(u"Image"), required=True)
+    image = silvaschema.Bytes(title=_("Image"), required=True)
 
 
 class ImageAddForm(silvaforms.SMIAddForm):
     """Add form for an image.
     """
     grok.context(IImage)
-    grok.name(u'Silva Image')
+    grok.name('Silva Image')
 
     fields = silvaforms.Fields(IImageAddFields)
     fields['id'].required = False
     fields['id'].validateForInterface = IImage
     fields['image'].fileNotSetLabel = _(
-        u"Click the Upload button to select an image.")
+        "Click the Upload button to select an image.")
 
     def _add(self, parent, data):
-        default_id = data['id'] is not NO_VALUE and data['id'] or u''
+        default_id = data['id'] is not NO_VALUE and data['id'] or ''
         factory = parent.manage_addProduct['Silva']
         return factory.manage_addImage(
             default_id, data['title'], file=data['image'])
@@ -53,39 +53,39 @@ class ImageEditForm(silvaforms.SMISubForm):
     grok.view(AssetEditTab)
     grok.order(10)
 
-    label = _(u'Edit')
+    label = _('Edit')
     ignoreContent = False
     dataManager = silvaforms.SilvaDataManager
 
     fields = silvaforms.Fields(IImageAddFields).omit('id')
     fields['image'].fileSetLabel = _(
-        u"Click the Upload button to replace the current image with a new image.")
+        "Click the Upload button to replace the current image with a new image.")
     actions  = silvaforms.Actions(silvaforms.CancelEditAction(),
                                   silvaforms.EditAction())
 
-image_formats = SimpleVocabulary([SimpleTerm(title=u'jpg', value='JPEG'),
-                                  SimpleTerm(title=u'png', value='PNG'),
-                                  SimpleTerm(title=u'gif', value='GIF')])
+image_formats = SimpleVocabulary([SimpleTerm(title='jpg', value='JPEG'),
+                                  SimpleTerm(title='png', value='PNG'),
+                                  SimpleTerm(title='gif', value='GIF')])
 
 
 class IFormatAndScalingFields(Interface):
     web_format = schema.Choice(
         source=image_formats,
-        title=_(u"Web format"),
-        description=_(u"Image format for web."))
+        title=_("Web format"),
+        description=_("Image format for web."))
     web_scale = schema.TextLine(
-        title=_(u"Scaling"),
-        description=_(u'Image scaling for web: use width x  '
-                      u'height in pixels, or one axis length, '
-                      u'or a percentage (100x200, 100x*, *x200, 40%).'
-                      u'Use 100% to scale back to the orginal format.'),
+        title=_("Scaling"),
+        description=_('Image scaling for web: use width x  '
+                      'height in pixels, or one axis length, '
+                      'or a percentage (100x200, 100x*, *x200, 40%).'
+                      'Use 100% to scale back to the orginal format.'),
         required=False)
     web_crop = silvaschema.CropCoordinates(
-        title=_(u"Cropping"),
-        description=_(u"Image cropping for web: use the"
-                      u" ‘set crop coordinates’ "
-                      u"button, or enter X1xY1-X2xY2"
-                      u" to define the cropping box."),
+        title=_("Cropping"),
+        description=_("Image cropping for web: use the"
+                      " ‘set crop coordinates’ "
+                      "button, or enter X1xY1-X2xY2"
+                      " to define the cropping box."),
         required=False)
 
 
@@ -106,8 +106,8 @@ class ImageFormatAndScalingForm(silvaforms.SMISubForm):
     fields['web_scale'].defaultValue = '100%'
 
     @silvaforms.action(
-        title=_(u'Change'),
-        description=_(u'Scale and/or crop the image with the new settings'),
+        title=_('Change'),
+        description=_('Scale and/or crop the image with the new settings'),
         implements=silvaforms.IDefaultAction)
     def set_properties(self):
         data, errors = self.extractData()
@@ -140,14 +140,14 @@ class InfoPortlet(SMIAssetPortlet):
         self.web_format = self.context.web_format.lower()
         dimensions = self.context.get_dimensions(hires=False)
         if dimensions != (0, 0):
-            self.dimensions = dict(zip(['width', 'height'], dimensions))
+            self.dimensions = dict(list(zip(['width', 'height'], dimensions)))
 
         if self.context.hires_image is not None:
             self.original_available = True
             original_dimensions = self.context.get_dimensions(hires=True)
             if original_dimensions not in (dimensions, (0, 0)):
                 self.original_dimensions = dict(
-                    zip(['width', 'height'], original_dimensions))
+                    list(zip(['width', 'height'], original_dimensions)))
 
         if self.context.thumbnail_image:
             self.thumbnail = self.context.tag(request=self.request,
@@ -155,7 +155,7 @@ class InfoPortlet(SMIAssetPortlet):
                                               thumbnail=True)
 
         self.orientation = self.context.get_orientation()
-        self.orientation_cls = unicode(self.orientation)
+        self.orientation_cls = str(self.orientation)
 
 
 class ImageHiresPreview(PageREST):

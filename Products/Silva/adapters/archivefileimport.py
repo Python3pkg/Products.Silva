@@ -3,7 +3,7 @@
 # See also LICENSE.txt
 
 # Python
-from cStringIO import StringIO
+from io import StringIO
 import os.path
 import re
 import zipfile

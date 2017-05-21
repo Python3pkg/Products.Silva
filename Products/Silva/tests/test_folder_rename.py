@@ -183,7 +183,7 @@ class AuthorFolderRenameTestCase(unittest.TestCase):
         self.assertTrue('published_link' in self.root.folder.objectIds())
         self.assertTrue(verifyObject(ILink, link))
         self.assertEqual(link.get_title(), 'Published Link')
-        self.assertEqual(link.get_editable().get_title(), u'Updaté Link')
+        self.assertEqual(link.get_editable().get_title(), 'Updaté Link')
 
     def test_rename_published_content_title(self):
         """Rename only the title on a published content. Nothing

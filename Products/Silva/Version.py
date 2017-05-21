@@ -88,12 +88,12 @@ class VersionManager(grok.Adapter):
 
         if self.content.get_approved_version() == versionid:
             raise VersioningError(
-                _(u"Version is approved."),
+                _("Version is approved."),
                 self.content, self.version)
 
         if self.content.get_public_version() == versionid:
             raise VersioningError(
-                _(u"Version is published."),
+                _("Version is published."),
                 self.content, self.version)
 
         if self.content.get_unapproved_version() == versionid:

@@ -3,7 +3,7 @@
 # See also LICENSE.txt
 
 from bisect import insort_right
-from itertools import imap
+
 import email
 import os.path
 import pkg_resources
@@ -22,14 +22,14 @@ def filter_types_for_interfaces(types, requires, excepts):
     """Filter Zope meta_types to require or prevent one implementing
     an interface.
     """
-    filter_type = lambda cls, ifcs: imap(lambda i: i.implementedBy(cls), ifcs)
+    filter_type = lambda cls, ifcs: map(lambda i: i.implementedBy(cls), ifcs)
 
     def filter_types(cls):
         cls = cls['instance']
         return ((not requires or any(filter_type(cls, requires))) and
                 not (excepts and any(filter_type(cls, excepts))))
 
-    return filter(filter_types, types)
+    return list(filter(filter_types, types))
 
 
 def meta_types_for_interface(interface, excepts=[]):
@@ -70,15 +70,15 @@ class BaseExtension(object):
     """
 
     def __init__(self, name, install, path,
-                 title=None, description=None, depends=(u'Silva',)):
+                 title=None, description=None, depends=('Silva',)):
         self._name = name
         self._title = title or name
         self._description = description
         self._install = install
         self._module_name = path
 
-        if depends and not (isinstance(depends, types.ListType) or
-                            isinstance(depends, types.TupleType)):
+        if depends and not (isinstance(depends, list) or
+                            isinstance(depends, tuple)):
             depends = (depends,)
 
         self._depends = depends
@@ -139,7 +139,7 @@ class ProductExtension(BaseExtension):
     implements(interfaces.IExtension)
 
     def __init__(self, name, install, path,
-                 title=None, description=None, depends=(u'Silva',)):
+                 title=None, description=None, depends=('Silva',)):
         super(ProductExtension, self).__init__(
             name, install, path, title, description, depends)
         assert path.startswith('Products.')
@@ -158,7 +158,7 @@ class EggExtension(BaseExtension):
     implements(interfaces.IExtension)
 
     def __init__(self, egg, name, install, path, title=None,
-                 description=None, depends=(u'Silva',)):
+                 description=None, depends=('Silva',)):
         if description is None:
             info = email.message_from_string(egg.get_metadata('PKG-INFO'))
             description = info.get('Summary')
@@ -195,7 +195,7 @@ class ExtensionRegistry(object):
         self._silva_addables = []
 
     def register(self, name, title,
-                 install_module=None, module_path=None, depends_on=(u'Silva',)):
+                 install_module=None, module_path=None, depends_on=('Silva',)):
         # Figure out which is the extension path.
         path = None
         assert not ((install_module is None) and (module_path is None))
@@ -257,7 +257,7 @@ class ExtensionRegistry(object):
         """
         # make mapping from name depended on to names that depend on it
         depends_on_mapping = {}
-        for value in self._extensions.values():
+        for value in list(self._extensions.values()):
             if not value.depends:
                 depends_on_mapping.setdefault(None, []).append(value.name)
                 continue
@@ -317,7 +317,7 @@ class ExtensionRegistry(object):
 
     def get_name_for_class(self, cls):
         path = cls.__module__
-        for module in self._extensions_by_module.keys():
+        for module in list(self._extensions_by_module.keys()):
             if (path.startswith(module) and
                 (len(path) == len(module) or
                  path[len(module)] == '.')):

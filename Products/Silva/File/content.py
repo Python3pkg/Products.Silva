@@ -2,7 +2,7 @@
 # Copyright (c) 2002-2013 Infrae. All rights reserved.
 # See also LICENSE.txt
 
-from cStringIO import StringIO
+from io import StringIO
 from cgi import escape
 from types import StringTypes
 import logging
@@ -75,7 +75,7 @@ def manage_addFile(context, identifier, title=None, file=None):
     try:
         chooser.checkName(identifier, None)
     except ContentError as e:
-        raise ValueError(_(u"Please provide a unique id: ${reason}",
+        raise ValueError(_("Please provide a unique id: ${reason}",
             mapping=dict(reason=e.reason)))
     service = getUtility(IFilesService)
     context._setObject(identifier, service.new_file(identifier))
@@ -186,14 +186,14 @@ class File(Asset):
         src = self.get_download_url(preview, request)
         title = self.get_title_or_id()
 
-        if extra_attributes.has_key('css_class'):
+        if 'css_class' in extra_attributes:
             extra_attributes['class'] = extra_attributes['css_class']
             del extra_attributes['css_class']
 
         extra_html_attributes = [
-            u'{name}="{value}"'.format(name=escape(name, 1),
+            '{name}="{value}"'.format(name=escape(name, 1),
                                       value=escape(value, 1))
-            for name, value in extra_attributes.iteritems()]
+            for name, value in extra_attributes.items()]
 
         return '<a href="%s" title="Download %s" %s>%s</a>' % (
             src, self.get_filename(), extra_html_attributes, title)

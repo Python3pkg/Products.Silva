@@ -21,25 +21,25 @@ logger = logging.getLogger('silva.file')
 
 
 class IFileAddFields(ITitledContent):
-    file = silvaschema.Bytes(title=_(u"File"), required=True)
+    file = silvaschema.Bytes(title=_("File"), required=True)
 
 
 class FileAddForm(silvaforms.SMIAddForm):
     """Add form for a file.
     """
     grok.context(IFile)
-    grok.name(u'Silva File')
+    grok.name('Silva File')
 
     fields = silvaforms.Fields(IFileAddFields)
     fields['id'].required = False
     fields['id'].validateForInterface = IFile
     fields['title'].required = False
     fields['file'].fileNotSetLabel = _(
-        u"Click the Upload button to select a file.")
+        "Click the Upload button to select a file.")
 
     def _add(self, parent, data):
-        default_id = data['id'] is not NO_VALUE and data['id'] or u''
-        default_title = data['title'] is not NO_VALUE and data['title'] or u''
+        default_id = data['id'] is not NO_VALUE and data['id'] or ''
+        default_title = data['title'] is not NO_VALUE and data['title'] or ''
         factory = parent.manage_addProduct['Silva']
         return factory.manage_addFile(
             default_id, default_title, data['file'])
@@ -52,14 +52,14 @@ class FileEditForm(silvaforms.SMISubForm):
     grok.view(AssetEditTab)
     grok.order(10)
 
-    label = _(u'Edit file content')
+    label = _('Edit file content')
     ignoreContent = False
     dataManager = silvaforms.SilvaDataManager
 
     fields = silvaforms.Fields(IFileAddFields).omit('id')
     fields['title'].required = False
     fields['file'].fileSetLabel = _(
-        u"Click the Upload button to replace the current file with a new file.")
+        "Click the Upload button to replace the current file with a new file.")
     actions  = silvaforms.Actions(
         silvaforms.CancelEditAction(),
         silvaforms.EditAction())
@@ -67,8 +67,8 @@ class FileEditForm(silvaforms.SMISubForm):
 
 class IFileTextFields(Interface):
     text = schema.Text(
-        title=_(u'Text content'),
-        description=_(u'Text contained in the file'),
+        title=_('Text content'),
+        description=_('Text contained in the file'),
         required=True)
 
 
@@ -79,7 +79,7 @@ class FileTextEditForm(silvaforms.SMISubForm):
     grok.view(AssetEditTab)
     grok.order(20)
 
-    label = _(u'Edit text content')
+    label = _('Edit text content')
     ignoreContent = False
     dataManager = silvaforms.SilvaDataManager
 
@@ -91,7 +91,7 @@ class FileTextEditForm(silvaforms.SMISubForm):
     def available(self):
         if self.context.is_text_editable():
             try:
-                unicode(self.context.get_text())
+                str(self.context.get_text())
                 return True
             except (UnicodeDecodeError, TypeError):
                 return False

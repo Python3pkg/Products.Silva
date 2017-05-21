@@ -24,13 +24,13 @@ from zeam.form import silva as silvaforms
 class IGhostFolderSchema(IIdentifiedContent):
 
     haunted = Reference(IContainer,
-            title=_(u"Target"),
-            description=_(u"The internal folder the ghost is mirroring"),
+            title=_("Target"),
+            description=_("The internal folder the ghost is mirroring"),
             required=True)
 
 
 class SyncAction(silvaforms.Action):
-    description = _(u"Synchronize target and ghost folder content")
+    description = _("Synchronize target and ghost folder content")
     ignoreRequest = True
 
     def available(self, form):
@@ -40,8 +40,8 @@ class SyncAction(silvaforms.Action):
         folder = form.context
         if folder.get_link_status() is not None:
             form.send_message(
-                _(u'Ghost Folder was not synchronized, '
-                  u'because the target is invalid.'),
+                _('Ghost Folder was not synchronized, '
+                  'because the target is invalid.'),
                 type='error')
             return silvaforms.FAILURE
         try:
@@ -53,18 +53,18 @@ class SyncAction(silvaforms.Action):
             return silvaforms.FAILURE
         else:
             form.send_message(
-                _(u'Ghost Folder synchronized.'), type='feedback')
+                _('Ghost Folder synchronized.'), type='feedback')
             return silvaforms.SUCCESS
 
 
 class GhostFolderAddForm(silvaforms.SMIAddForm):
     """ Add form for ghost folders
     """
-    grok.name(u'Silva Ghost Folder')
+    grok.name('Silva Ghost Folder')
 
     fields = silvaforms.Fields(IGhostFolderSchema)
     fields['haunted'].referenceNotSetLabel = _(
-        u"Click the Lookup button to select a container to haunt.")
+        "Click the Lookup button to select a container to haunt.")
     dataValidators = [TargetValidator('haunted', IContainer, adding=True)]
 
     def _add(self, parent, data):
@@ -81,11 +81,11 @@ class GhostFolderEditForm(silvaforms.SMIEditForm):
 
     fields = silvaforms.Fields(IGhostFolderSchema).omit('id')
     dataValidators = [TargetValidator('haunted', IContainer, adding=False)]
-    actions = silvaforms.SMIEditForm.actions + SyncAction(_(u'Synchronize'))
+    actions = silvaforms.SMIEditForm.actions + SyncAction(_('Synchronize'))
 
 
 class GhostFolderEditMenu(MenuItem):
     grok.adapts(ContentMenu, IGhostFolder)
     grok.order(10.1)            # Goes right after the content tab.
-    name = _(u'Edit')
+    name = _('Edit')
     screen = GhostFolderEditForm

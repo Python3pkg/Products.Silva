@@ -62,7 +62,7 @@ class IconSprite(object):
             parent = registry
         self._icons = {}
         self._parent = parent
-        for key, icon in sprite.iteritems():
+        for key, icon in sprite.items():
             if not isinstance(key, tuple):
                 key = ('meta_type', key)
             if not interfaces.IIcon.providedBy(icon):
@@ -88,7 +88,7 @@ class IconRegistry(object):
         icon = self._icons.get(identifier, None)
         if icon is None:
             if default is _marker:
-                raise ValueError(u"No icon for %r" % repr(identifier))
+                raise ValueError("No icon for %r" % repr(identifier))
             return default
         return icon
 
@@ -201,7 +201,7 @@ class IconResolver(grok.Adapter):
         if icon is not None:
             return icon.template.format(
                 url=icon.get_url(self, content), alt=alt)
-        return u''
+        return ''
 
     def get_identifier(self, identifier, default=_marker):
         if not isinstance(identifier, tuple):
@@ -246,7 +246,7 @@ class IconResolver(grok.Adapter):
                     content = content.source
                 meta_type = getattr(content, 'meta_type', None)
                 if meta_type is None:
-                    raise ValueError(u"No icon for unknown object %r" % content)
+                    raise ValueError("No icon for unknown object %r" % content)
                 identifier = ('meta_type', meta_type)
             return self.sprite.get(identifier)
         except ValueError:

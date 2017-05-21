@@ -96,26 +96,26 @@ class MetadataVersioningTestCase(unittest.TestCase):
             {})
         self.assertEqual(
             binding.get('silva-content', 'maintitle'),
-            u'UTF-8 non décodé')
+            'UTF-8 non décodé')
         self.assertEqual(
             binding.setValues(
-                'silva-content', {'maintitle': u'UTF-8 décodé'}),
+                'silva-content', {'maintitle': 'UTF-8 décodé'}),
             {})
         self.assertEqual(
             binding.get('silva-content', 'maintitle'),
-            u'UTF-8 décodé')
+            'UTF-8 décodé')
 
         # Datetime validation
         self.assertEqual(
             binding.setValues(
                 'silva-extra', {'modificationtime': 'today'}),
-            {'modificationtime': u'You did not enter a valid date and time.'})
+            {'modificationtime': 'You did not enter a valid date and time.'})
 
         # Choice validation
         self.assertEqual(
             binding.setValues(
                 'silva-settings', {'hide_from_tocs': 'maybe'}),
-            {'hide_from_tocs': u'You selected an item that was not in the list.'})
+            {'hide_from_tocs': 'You selected an item that was not in the list.'})
         self.assertEqual(
             binding.get('silva-settings', 'hide_from_tocs'),
             'do not hide')
@@ -141,36 +141,36 @@ class MetadataVersioningTestCase(unittest.TestCase):
         self.assertNotEqual(document_binding, document)
         self.assertEqual(
             document_binding.get('silva-content', 'maintitle'),
-            u"Document")
+            "Document")
         self.assertEqual(
             service.getMetadataValue(document, 'silva-content', 'maintitle'),
-            u"Document")
+            "Document")
 
         # You can't change the value.
         with self.assertRaises(ReadOnlyError):
-            document_binding.setValues('silva-content', {'maintitle': u'Ghost'})
+            document_binding.setValues('silva-content', {'maintitle': 'Ghost'})
 
         # Nothing changed.
         document_binding = service.getMetadata(document)
         self.assertEqual(
             document_binding.get('silva-content', 'maintitle'),
-            u"Document")
+            "Document")
         self.assertEqual(
             service.getMetadataValue(document, 'silva-content', 'maintitle'),
-            u"Document")
+            "Document")
 
         # Update document metadata
         version_binding = service.getMetadata(version)
-        version_binding.setValues('silva-content', {'maintitle': u"Changed"})
+        version_binding.setValues('silva-content', {'maintitle': "Changed"})
 
         # You should see the values from the content point of view.
         document_binding = service.getMetadata(document)
         self.assertEqual(
             document_binding.get('silva-content', 'maintitle'),
-            u"Changed")
+            "Changed")
         self.assertEqual(
             service.getMetadataValue(document, 'silva-content', 'maintitle'),
-            u"Changed")
+            "Changed")
 
 def test_suite():
     suite = unittest.TestSuite()

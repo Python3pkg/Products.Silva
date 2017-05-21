@@ -25,7 +25,7 @@ from silva.core.references.reference import ReferenceValue
 from silva.core.services.utils import advanced_walk_silva_tree
 from silva.translations import translate as _
 
-REFERENCE_TAG = u'indexer'
+REFERENCE_TAG = 'indexer'
 
 
 class IndexerReferenceValue(ReferenceValue):
@@ -62,7 +62,7 @@ class Indexer(Content, SimpleItem):
         """Returns a list of all index entry names in the index, sorted
         alphabetically.
         """
-        result = self._index.keys()
+        result = list(self._index.keys())
         result.sort(key=lambda i: i.lower())
         return result
 
@@ -74,13 +74,11 @@ class Indexer(Content, SimpleItem):
         """
         get_references = getUtility(IReferenceService).get_references_from
         contents = dict(
-            map(
-                lambda r: (r.tags[1], r.target),
-                get_references(self, name=REFERENCE_TAG)))
+            [(r.tags[1], r.target) for r in get_references(self, name=REFERENCE_TAG)])
 
         result = [(title, contents.get(path), name)
                   for path, (name, title) in
-                  self._index.get(entry, {}).items()]
+                  list(self._index.get(entry, {}).items())]
         result.sort(key=lambda i: i[0].lower())
         return result
 
@@ -137,7 +135,7 @@ class Indexer(Content, SimpleItem):
 
             if identifier is None:
                 # There is no reference, create a new one.
-                identifier = unicode(uuid.uuid1())
+                identifier = str(uuid.uuid1())
                 reference = service.new_reference(
                     self, name=REFERENCE_TAG, factory=IndexerReferenceValue)
                 reference.set_target(content)
@@ -159,8 +157,8 @@ class Indexer(Content, SimpleItem):
             reference_name = reference.tags[1]
         else:
             reference_name = reference
-        for indexes in self._index.itervalues():
-            if indexes.has_key(reference_name):
+        for indexes in self._index.values():
+            if reference_name in indexes:
                 del indexes[reference_name]
 
 InitializeClass(Indexer)

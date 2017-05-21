@@ -34,8 +34,8 @@ class IContainerSchema(ITitledContent):
     """Add a select for the default item.
     """
     default_item = schema.Choice(
-        title=_(u"First item"),
-        description=_(u"Choose an item to be created within the container."),
+        title=_("First item"),
+        description=_("Choose an item to be created within the container."),
         source=silva_container_policy,
         required=True)
 
@@ -44,7 +44,7 @@ class FolderAddForm(silvaforms.SMIAddForm):
     """Add form for a Folder.
     """
     grok.context(IFolder)
-    grok.name(u'Silva Folder')
+    grok.name('Silva Folder')
 
     fields = silvaforms.Fields(IContainerSchema)
     # Prevent to call a folder index.
@@ -60,7 +60,7 @@ class ContainerView(silvaviews.View):
     """Default view for containers.
     """
     grok.context(IContainer)
-    unavailable_message = _(u'This container has no index.')
+    unavailable_message = _('This container has no index.')
 
     def render(self):
         default = self.context.get_default()

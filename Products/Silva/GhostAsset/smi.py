@@ -20,19 +20,19 @@ from zeam.form import silva as silvaforms
 class IGhostAssetSchema(IIdentifiedContent):
 
     haunted = Reference(IAsset,
-            title=_(u"Target"),
-            description=_(u"The asset the ghost is mirroring"),
+            title=_("Target"),
+            description=_("The asset the ghost is mirroring"),
             required=True)
 
 
 class GhostAssetAddForm(silvaforms.SMIAddForm):
     """ Add form for ghost folders
     """
-    grok.name(u'Silva Ghost Asset')
+    grok.name('Silva Ghost Asset')
 
     fields = silvaforms.Fields(IGhostAssetSchema)
     fields['haunted'].referenceNotSetLabel = _(
-        u"Click the Lookup button to select an asset to haunt.")
+        "Click the Lookup button to select an asset to haunt.")
     dataValidators = [TargetValidator('haunted', IAsset, adding=True)]
 
     def _add(self, parent, data):
@@ -48,7 +48,7 @@ class GhostAssetEditForm(silvaforms.SMISubForm):
     grok.view(AssetEditTab)
     grok.order(10)
 
-    label = _(u'Edit ghost')
+    label = _('Edit ghost')
     ignoreContent = False
     dataManager = silvaforms.SilvaDataManager
     dataValidators = [TargetValidator('haunted', IAsset, adding=False)]

@@ -18,19 +18,19 @@ class SiteManager(grok.Adapter):
 
     def make_site(self):
         if self.is_site():
-            raise ValueError(_(u'Already a local site.'))
+            raise ValueError(_('Already a local site.'))
         make_objectmanager_site(self.context)
 
     def delete_site(self):
         if not self.is_site():
-            raise ValueError(_(u'Not a local site.'))
+            raise ValueError(_('Not a local site.'))
         if interfaces.IRoot.providedBy(self.context):
-            raise ValueError(_(u"Can't disable local site on Silva Root."))
+            raise ValueError(_("Can't disable local site on Silva Root."))
         sm = ISite(self.context).getSiteManager()
         if list(sm.registeredAdapters()):
-            raise ValueError(_(u'Still have registered customizations.'))
+            raise ValueError(_('Still have registered customizations.'))
         if list(sm.registeredUtilities()):
-            raise ValueError(_(u'Still have registered services.'))
+            raise ValueError(_('Still have registered services.'))
         disableSite(self.context)
 
     def is_site(self):

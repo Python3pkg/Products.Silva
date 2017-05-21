@@ -88,7 +88,7 @@ class Folder(Publishable, QuotaContainer, BaseFolder):
     def manage_delObjects(self, ids=[], REQUEST=None):
         """Delete objects.
         """
-        if isinstance(ids, basestring):
+        if isinstance(ids, str):
             ids = [ids]
 
         try:
@@ -143,7 +143,7 @@ class Folder(Publishable, QuotaContainer, BaseFolder):
                     content._v_publication_status_updated = True
                 except:
                     logger.exception(
-                        u"error while updating publication status for: %s",
+                        "error while updating publication status for: %s",
                         '/'.join(self.getPhysicalPath() + (id,)))
         return content
 
@@ -169,7 +169,7 @@ class Folder(Publishable, QuotaContainer, BaseFolder):
         """Turn this folder into a folder.
         """
         raise ContentError(
-            _(u"You cannot convert a folder into a folder."), self)
+            _("You cannot convert a folder into a folder."), self)
 
     # Silva addables
 
@@ -282,17 +282,15 @@ class Folder(Publishable, QuotaContainer, BaseFolder):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_ordered_publishables')
     def get_ordered_publishables(self, interface=IPublishable):
-        assert interface.isOrExtends(IPublishable), u"Invalid interface"
-        result = filter(
-            lambda content: not content.is_default(),
-            self.objectValues(meta_types_for_interface(interface)))
+        assert interface.isOrExtends(IPublishable), "Invalid interface"
+        result = [content for content in self.objectValues(meta_types_for_interface(interface)) if not content.is_default()]
         result.sort(key=IOrderManager(self).get_position)
         return result
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_non_publishables')
     def get_non_publishables(self, interface=INonPublishable):
-        assert interface.isOrExtends(INonPublishable), u"Invalid interface"
+        assert interface.isOrExtends(INonPublishable), "Invalid interface"
         result = self.objectValues(meta_types_for_interface(interface))
         result.sort(key=lambda o: o.getId())
         return result

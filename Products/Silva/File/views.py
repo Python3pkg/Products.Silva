@@ -36,7 +36,7 @@ class BlobIterator(object):
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         if self.__closed:
             raise StopIteration
         size = CHUNK_SIZE
@@ -63,10 +63,10 @@ class OFSPayloadIterator(object):
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         if self.__payload is not None:
             data = self.__payload.data
-            self.__payload = self.__payload.next
+            self.__payload = self.__payload.__next__
             return data
         raise StopIteration
 
@@ -131,7 +131,7 @@ class FileView(silvaviews.View):
 
 def parse_datetime(value):
     try:
-        return long(time_from_datetime(value))
+        return int(time_from_datetime(value))
     except:
         return 0
 
@@ -145,7 +145,7 @@ class FileDownloadView(silvaviews.View):
         date = self.context.get_modification_datetime()
         if date is None:
             return 0
-        return long(date)
+        return int(date)
 
     def is_not_modified(self):
         """Return true if the file was not modified since the date
@@ -186,7 +186,7 @@ class FileDownloadView(silvaviews.View):
     def render(self):
         if self.is_not_modified():
             self.response.setStatus(304)
-            return u''
+            return ''
         return self.payload()
 
 
@@ -218,7 +218,7 @@ class BlobFileDownloadView(FileDownloadView):
                 self.response.setHeader(
                     'Content-Range',
                     'bytes */%d' % size)
-                return u''
+                return ''
             self.response.setStatus(206)
             self.response.setHeader(
                 'Content-Length',
@@ -231,5 +231,5 @@ class BlobFileDownloadView(FileDownloadView):
     def render(self):
         if self.is_not_modified():
             self.response.setStatus(304)
-            return u''
+            return ''
         return self.payload()

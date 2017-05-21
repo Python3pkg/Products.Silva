@@ -175,7 +175,7 @@ class GhostFolderTestCase(unittest.TestCase):
         folder = self.root.folder
 
         reference = getUtility(IReferenceService).get_reference(
-            ghost, name=u"haunted")
+            ghost, name="haunted")
         self.assertTrue(verifyObject(IReferenceValue, reference))
         self.assertEqual(
             aq_chain(reference.target),
@@ -303,35 +303,35 @@ class GhostFolderTestCase(unittest.TestCase):
         self.assertNotEqual(ghost_binding, None)
         self.assertEqual(
             ghost_binding.get('silva-content', 'maintitle'),
-            u"Folder")
+            "Folder")
         self.assertEqual(
             service.getMetadataValue(ghost, 'silva-content', 'maintitle'),
-            u"Folder")
+            "Folder")
 
         # You can't set a value
         with self.assertRaises(ReadOnlyError):
-            ghost_binding.setValues('silva-content', {'maintitle': u'Ghost'})
+            ghost_binding.setValues('silva-content', {'maintitle': 'Ghost'})
 
         ghost_binding = service.getMetadata(ghost)
         self.assertEqual(
             ghost_binding.get('silva-content', 'maintitle'),
-            u"Folder")
+            "Folder")
         self.assertEqual(
             service.getMetadataValue(ghost, 'silva-content', 'maintitle'),
-            u"Folder")
+            "Folder")
 
         # Update folder metadata
         folder_binding = service.getMetadata(folder)
-        folder_binding.setValues('silva-content', {'maintitle': u"Changed"})
+        folder_binding.setValues('silva-content', {'maintitle': "Changed"})
 
         # You should see the values from the ghost point of view.
         ghost_binding = service.getMetadata(ghost)
         self.assertEqual(
             ghost_binding.get('silva-content', 'maintitle'),
-            u"Changed")
+            "Changed")
         self.assertEqual(
             service.getMetadataValue(ghost, 'silva-content', 'maintitle'),
-            u"Changed")
+            "Changed")
 
     def test_ghost_link_status(self):
         """Test Ghost Folder get_link_status. You cannot haunt a Ghost
@@ -382,10 +382,10 @@ class GhostFolderTestCase(unittest.TestCase):
         factory.manage_addGhostFolder('ghost', None)
 
         ghost = self.root.target.ghost
-        self.assertEqual(ghost.get_title_editable(), u'Ghost target is broken')
-        self.assertEqual(ghost.get_title(), u'Ghost target is broken')
-        self.assertEqual(ghost.get_short_title_editable(), u'Ghost target is broken')
-        self.assertEqual(ghost.get_short_title(), u'Ghost target is broken')
+        self.assertEqual(ghost.get_title_editable(), 'Ghost target is broken')
+        self.assertEqual(ghost.get_title(), 'Ghost target is broken')
+        self.assertEqual(ghost.get_short_title_editable(), 'Ghost target is broken')
+        self.assertEqual(ghost.get_short_title(), 'Ghost target is broken')
 
         ghost.set_haunted(self.root.folder)
         self.assertEqual(ghost.get_title_editable(), 'Folder')
@@ -548,7 +548,7 @@ class GhostFolderTestCase(unittest.TestCase):
 
         # We add a reference. It should be kept.
         service = getUtility(IReferenceService)
-        reference = service.new_reference(self.root.folder, name=u"test")
+        reference = service.new_reference(self.root.folder, name="test")
         reference.set_target(ghost.data)
         self.assertTrue(verifyObject(IMockupAsset, ghost.data))
 
@@ -563,7 +563,7 @@ class GhostFolderTestCase(unittest.TestCase):
             aq_chain(ghost.data.get_haunted()),
             aq_chain(self.root.folder.data))
         # The reference should have been moved as well.
-        references = list(service.get_references_to(ghost.data, name=u"test"))
+        references = list(service.get_references_to(ghost.data, name="test"))
         self.assertEqual(len(references), 1)
         self.assertEqual(references[0].source, self.root.folder)
         self.assertEqual(references[0].target, ghost.data)

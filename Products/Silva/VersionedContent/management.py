@@ -31,24 +31,24 @@ class VersionedContentPublicationWorkflow(grok.Adapter):
     @silvaconf.protect('silva.ChangeSilvaContent')
     def request_approval(self, message=None):
         if message is None:
-            message = u"Request immediate publication of this content. " + \
-                u"(automatically generated message)."
+            message = "Request immediate publication of this content. " + \
+                "(automatically generated message)."
         self.context.request_version_approval(message)
         return True
 
     @silvaconf.protect('silva.ChangeSilvaContent')
     def withdraw_request(self, message=None):
         if message is None:
-            message = u"Approval was withdrawn " + \
-                u"(automatically generated message)."
+            message = "Approval was withdrawn " + \
+                "(automatically generated message)."
         self.context.withdraw_version_approval(message)
         return True
 
     @silvaconf.protect('silva.ApproveSilvaContent')
     def reject_request(self, message=None):
         if message is None:
-            message = u"Approval was rejected " +\
-                u"(automatically generated message)."
+            message = "Approval was rejected " +\
+                "(automatically generated message)."
         self.context.reject_version_approval(message)
         return True
 
@@ -95,7 +95,7 @@ class VersionedContentPublicationWorkflow(grok.Adapter):
         return True
 
     def get_versions(self, sort_attribute='id'):
-        versions = filter(IVersion.providedBy, self.context.objectValues())
+        versions = list(filter(IVersion.providedBy, self.context.objectValues()))
         if sort_attribute == 'id':
             versions.sort(key=lambda a: int(a.id))
         elif sort_attribute:

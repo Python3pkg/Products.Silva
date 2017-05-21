@@ -26,17 +26,17 @@ class GhostAssetView(silvaviews.View):
     def render(self):
         haunted = self.context.get_haunted()
         if haunted is None:
-            return _(u"This content is unavailable. "
-                     u"Please inform the site manager.")
+            return _("This content is unavailable. "
+                     "Please inform the site manager.")
         permission = self.is_preview and 'Read Silva content' or 'View'
         if not getSecurityManager().checkPermission(permission, haunted):
             raise Unauthorized(
-                u"You do not have permission to "
-                u"see the target of this ghost")
+                "You do not have permission to "
+                "see the target of this ghost")
         if IDownloableAsset.providedBy(haunted):
             return haunted.get_html_tag(
                 request=self.request, preview=self.is_preview)
-        return _(u"This content cannot be previewed.")
+        return _("This content cannot be previewed.")
 
 
 class GhostAssetDownloadView(silvaviews.View):
@@ -48,12 +48,12 @@ class GhostAssetDownloadView(silvaviews.View):
         haunted = self.context.get_haunted()
         if haunted is None:
             self.response.setStatus(404)
-            return u''
+            return ''
         permission = self.is_preview and 'Read Silva content' or 'View'
         if not getSecurityManager().checkPermission(permission, haunted):
             raise Unauthorized(
-                u"You do not have permission to "
-                u"see the target of this ghost")
+                "You do not have permission to "
+                "see the target of this ghost")
         view = getMultiAdapter((haunted, self.request), name='index.html')
         return view()
 

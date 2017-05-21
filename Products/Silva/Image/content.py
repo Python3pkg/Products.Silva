@@ -2,7 +2,7 @@
 # Copyright (c) 2002-2013 Infrae. All rights reserved.
 # See also LICENSE.txt
 
-from cStringIO import StringIO
+from io import StringIO
 from cgi import escape
 import logging
 import mimetypes
@@ -55,7 +55,7 @@ def validate_image(file):
         # Try to validate file format.
         file.seek(0)
         PILImage.open(file)
-    except IOError, error:
+    except IOError as error:
         raise ValueError(error.args[-1].capitalize())
     # Come back at the begining..
     finally:
@@ -82,7 +82,7 @@ def manage_addImage(context, identifier, title=None, file=None):
     try:
         name_chooser.checkName(identifier, None)
     except ContentError as e:
-        raise ValueError(_(u"Please provide a unique id: ${reason}",
+        raise ValueError(_("Please provide a unique id: ${reason}",
             mapping=dict(reason=e.reason)))
     context._setObject(identifier, Image(identifier))
     content = context._getOb(identifier)
@@ -101,7 +101,7 @@ class ImageFile(object):
         self._changed = False
         try:
             self.image = PILImage.open(self._fd)
-        except IOError, error:
+        except IOError as error:
             self._fd.close()
             raise ValueError(error.args[-1].capitalize())
 
@@ -180,7 +180,7 @@ class Crop(Transformation):
         box = image.get_box()
         if box.size < self.box.size:
             raise ValueError(
-                _(u"'${crop}' defines an impossible cropping for the current image",
+                _("'${crop}' defines an impossible cropping for the current image",
                   mapping={'crop': str(self.box)}))
 
     def __call__(self, image):
@@ -343,8 +343,8 @@ class Image(Asset):
                 return self.image.get_file()
             # Original format of the cropped/resize image is not possible.
             raise ValueError(
-                _(u"Low resolution image in original format is "
-                  u"not supported"))
+                _("Low resolution image in original format is "
+                  "not supported"))
         return None
 
     security.declareProtected(SilvaPermissions.View, 'get_canonical_web_scale')
@@ -454,22 +454,22 @@ class Image(Asset):
 
         title = self.get_title_or_id()
         width, height = self.get_dimensions(thumbnail=thumbnail, hires=hires)
-        if extra_attributes.has_key('css_class'):
+        if 'css_class' in extra_attributes:
             extra_attributes['class'] = extra_attributes['css_class']
             del extra_attributes['css_class']
 
         extra_html_attributes = [
-            u'{name}="{value}"'.format(name=escape(name, 1),
+            '{name}="{value}"'.format(name=escape(name, 1),
                                       value=escape(value, 1))
-            for name, value in extra_attributes.iteritems()]
+            for name, value in extra_attributes.items()]
 
-        return u'<img src="{src}" width="{width}" height="{height}" ' \
-               u'alt="{alt}" {extra_attributes} />'.format(
+        return '<img src="{src}" width="{width}" height="{height}" ' \
+               'alt="{alt}" {extra_attributes} />'.format(
                     src=url,
                     width=str(width),
                     height=str(height),
                     alt=escape(title, 1),
-                    extra_attributes=u" ".join(extra_html_attributes))
+                    extra_attributes=" ".join(extra_html_attributes))
 
     security.declareProtected(SilvaPermissions.View, 'url')
     def url(self, hires=False, thumbnail=False, request=None, preview=False):
@@ -637,7 +637,7 @@ class Image(Asset):
                 return
             else:
                 raise ValueError(str(error))
-        except ValueError, e:
+        except ValueError as e:
             logger.info("Thumbnail creation failed for %s with %s" %
                         ('/'.join(self.getPhysicalPath()), str(e)))
             # no thumbnail
@@ -710,7 +710,7 @@ class ImageStorageConverter(object):
         return image
 
 
-for mimetype in mimetypes.types_map.values():
+for mimetype in list(mimetypes.types_map.values()):
     if mimetype.startswith('image'):
         mimetypeRegistry.register(mimetype, manage_addImage, 'Silva')
 

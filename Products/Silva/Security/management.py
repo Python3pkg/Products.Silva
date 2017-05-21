@@ -75,10 +75,8 @@ class AccessSecurityManager(grok.Adapter):
         notify(events.SecurityRestrictionModifiedEvent(self.context, role))
 
     def get_minimum_role(self):
-        roles = filter(
-            lambda r: r in roleinfo.ALL_ROLES,
-            map(str, rolesForPermissionOn(
-                    SilvaPermissions.View, self.context)))
+        roles = [r for r in map(str, rolesForPermissionOn(
+                    SilvaPermissions.View, self.context)) if r in roleinfo.ALL_ROLES]
         roles.sort(key=roleinfo.ALL_ROLES.index)
         if roles:
             role = roles[0]
@@ -165,12 +163,12 @@ class Authorization(object):
         identifier = self.identifier
         if identifier == self._query.get_user_id():
             raise errors.UnauthorizedRoleAssignement(
-                _(u"You cannot revoke your own role"),
+                _("You cannot revoke your own role"),
                 self.context, role, identifier)
         user_role = self._query.get_user_role()
         if user_role is None or is_role_greater(role, user_role):
             raise errors.UnauthorizedRoleAssignement(
-                _(u"You must have at least the role you are trying to revoke"),
+                _("You must have at least the role you are trying to revoke"),
                 self.context, role, identifier)
         self.context.manage_delLocalRoles([identifier])
         # Update computed value
@@ -189,11 +187,11 @@ class Authorization(object):
         user_role = self._query.get_user_role()
         if user_role is None or is_role_greater(role, user_role):
             raise errors.UnauthorizedRoleAssignement(
-                _(u"You must have at least the role you are trying to grant"),
+                _("You must have at least the role you are trying to grant"),
                 self.context, role, identifier)
         if role not in self.source.allowed_roles():
             raise errors.UnauthorizedRoleAssignement(
-                _(u"This role cannot be granted in this context"),
+                _("This role cannot be granted in this context"),
                 self.context, role, identifier)
         self.context.manage_setLocalRoles(identifier, [role])
         # Update computed value

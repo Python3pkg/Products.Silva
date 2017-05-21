@@ -21,8 +21,8 @@ class IGhostSchema(IIdentifiedContent):
 
     haunted = Reference(
         IContent,
-        title=_(u"Target"),
-        description=_(u"The internal item the ghost is mirroring."),
+        title=_("Target"),
+        description=_("The internal item the ghost is mirroring."),
         required=True)
 
 
@@ -59,12 +59,12 @@ def TargetValidator(field_name, wanted, adding=False):
 class GhostAddForm(silvaforms.SMIAddForm):
     """Add form for a ghost
     """
-    grok.name(u"Silva Ghost")
+    grok.name("Silva Ghost")
     grok.context(IGhost)
 
     fields = silvaforms.Fields(IGhostSchema)
     fields['haunted'].referenceNotSetLabel = _(
-        u"Click the Lookup button to select an item to haunt.")
+        "Click the Lookup button to select an item to haunt.")
     dataValidators = [TargetValidator('haunted', IContent, adding=True)]
 
     def _add(self, parent, data):

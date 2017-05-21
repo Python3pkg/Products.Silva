@@ -23,8 +23,7 @@ class CatalogVersioningTestCase(unittest.TestCase):
             factory.manage_addMockupVersionedContent('document', 'Document')
 
     def search(self, path):
-        return map(lambda b: (b.getPath(), b.publication_status),
-                   self.root.service_catalog(path=path))
+        return [(b.getPath(), b.publication_status) for b in self.root.service_catalog(path=path)]
 
     def test_unapproved(self):
         """By default everything is cataloged and unapproved.

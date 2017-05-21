@@ -83,20 +83,20 @@ class Versioning(object):
         """
 
         assert self._approved_version == empty_version, \
-            u'There is an approved version'
+            'There is an approved version'
 
         assert self._unapproved_version == empty_version, \
-            u'There is an unapproved version'
+            'There is an unapproved version'
 
         # if a version with this name already exists, complain
         if self._public_version is not None:
             assert version_id != self._public_version[0], \
-                u'There is already a public version with the same id'
+                'There is already a public version with the same id'
 
         previous_versions = self._previous_versions or []
         for previous_version in previous_versions:
             assert version_id != previous_version[0], \
-                u'There is already a previous version with the same id'
+                'There is already a previous version with the same id'
 
         self._unapproved_version = (version_id,
                                     publication_datetime,
@@ -168,7 +168,7 @@ class Versioning(object):
         """
         if self._public_version == empty_version:
             raise VersioningError(
-                _(u"There is no public version to close."),
+                _("There is no public version to close."),
                 self)
 
         previous_versions = self._previous_versions or []
@@ -205,7 +205,7 @@ class Versioning(object):
                         self._previous_versions[-1]
                 if version_id is None:
                     raise VersioningError(
-                        _(u"There is no version to create a version form."),
+                        _("There is no version to create a version form."),
                         self)
         if expiration_time is not None and not expiration_time.isFuture():
             # Reset expiration time if it is in the past.

@@ -25,7 +25,7 @@ from Products.Silva.testing import assertTriggersEvents
 
 def search(**query):
     catalog = getUtility(ICatalogService)
-    return map(lambda b: b.getPath(), catalog(**query))
+    return [b.getPath() for b in catalog(**query)]
 
 
 class DefaultImageTestCase(TestCase):
@@ -48,7 +48,7 @@ class DefaultImageTestCase(TestCase):
                 self.image_size = image.tell()
                 image.seek(0, 0)
 
-                factory.manage_addImage('test_image', u'Image élaboré', image)
+                factory.manage_addImage('test_image', 'Image élaboré', image)
 
         image = self.root._getOb('test_image')
         metadata = getUtility(IMetadataService).getMetadata(image)

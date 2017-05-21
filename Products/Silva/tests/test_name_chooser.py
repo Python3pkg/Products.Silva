@@ -46,7 +46,7 @@ class NameChooserTestCase(unittest.TestCase):
         """You can create a content with an unicode id.
         """
         factory = self.root.manage_addProduct['Silva']
-        factory.manage_addMockupVersionedContent(u'item', u'Title')
+        factory.manage_addMockupVersionedContent('item', 'Title')
         item = self.root._getOb('item', None)
         self.assertIsNotNone(item)
 
@@ -55,7 +55,7 @@ class NameChooserTestCase(unittest.TestCase):
         """
         factory = self.root.manage_addProduct['Silva']
         with self.assertRaises(ValueError):
-            factory.manage_addMockupVersionedContent(u'itéám', u'Title')
+            factory.manage_addMockupVersionedContent('itéám', 'Title')
 
     def test_silva_name_chooser(self):
         """Test name chooser implementation for Silva contents.
@@ -188,7 +188,7 @@ class MangleIdTestCase(unittest.TestCase):
     def test_cook_id(self):
         id = mangle.Id(
             self.root.folder,
-            u'Gro\N{LATIN SMALL LETTER SHARP S}e Datei').cook()
+            'Gro\N{LATIN SMALL LETTER SHARP S}e Datei').cook()
         self.assertTrue(id.isValid())
         self.assertEqual(str(id), 'Grose_Datei')
 

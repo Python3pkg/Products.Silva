@@ -121,8 +121,8 @@ class GhostFolder(GhostBase, Folder):
 
         if errors:
             raise ContentErrorBundle(
-                _(u"Error while synchronizing the Ghost Folder: "
-                  u"not all its content have been updated properly."),
+                _("Error while synchronizing the Ghost Folder: "
+                  "not all its content have been updated properly."),
                 content=self, errors=errors)
         return True
 

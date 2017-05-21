@@ -19,25 +19,25 @@ import transaction
 
 class IExportOptions(Interface):
     include_publications = schema.Bool(
-        title=_(u"Include sub publications?"),
-        description=_(u"Check to export all sub publications. "),
+        title=_("Include sub publications?"),
+        description=_("Check to export all sub publications. "),
         default=False,
         required=False)
     others_contents = schema.Bool(
-        title=_(u"Include other contents?"),
-        description=_(u"Check to export content not providing an XML "
-                      u"export functionality. This can cause problems."),
+        title=_("Include other contents?"),
+        description=_("Check to export content not providing an XML "
+                      "export functionality. This can cause problems."),
         default=True,
         required=False)
     only_previewable = schema.Bool(
-        title=_(u"Export only newest versions?"),
-        description=_(u"If not checked all versions are exported."),
+        title=_("Export only newest versions?"),
+        description=_("If not checked all versions are exported."),
         default=True,
         required=False)
     external_references = schema.Bool(
-        title=_(u'Allow content refering not exported one to be exported?'),
-        description=_(u"If checked, export content refering "
-                      u"not exported one without error."),
+        title=_('Allow content refering not exported one to be exported?'),
+        description=_("If checked, export content refering "
+                      "not exported one without error."),
         default=False,
         required=False)
 

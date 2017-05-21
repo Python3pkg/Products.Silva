@@ -86,15 +86,15 @@ class IndexerTestCase(unittest.TestCase):
             [])
         self.assertItemsEqual(
             folder.indexer.get_index_entry('Anchor Alpha'),
-            [(u'Alpha', folder.alpha, 'anchor_alpha')])
+            [('Alpha', folder.alpha, 'anchor_alpha')])
         self.assertItemsEqual(
             folder.indexer.get_index_entry('Anchor Beta'),
-            [(u'Beta', folder.beta, 'anchor_alpha')])
+            [('Beta', folder.beta, 'anchor_alpha')])
         self.assertItemsEqual(
             folder.indexer.get_index_entry('Anchor Tetra'),
-            [(u'Beta', folder.beta, 'anchor_beta'),
-             (u'Kappa', folder.kappa, 'anchor_kappa'),
-             (u'Kappa', folder.ghost, 'anchor_kappa')])
+            [('Beta', folder.beta, 'anchor_beta'),
+             ('Kappa', folder.kappa, 'anchor_kappa'),
+             ('Kappa', folder.ghost, 'anchor_kappa')])
 
     def test_remove_entry_when_remove_indexes(self):
         """Verify that corresponding entries and references are
@@ -105,7 +105,7 @@ class IndexerTestCase(unittest.TestCase):
         service = getUtility(IReferenceService)
         self.assertItemsEqual(
             folder.indexer.get_index_entry('Anchor Alpha'),
-            [(u'Alpha', folder.alpha, u'anchor_alpha')])
+            [('Alpha', folder.alpha, 'anchor_alpha')])
         self.assertEqual(
             len(list(service.get_references_between(
                         folder.indexer, folder.alpha))),
@@ -131,7 +131,7 @@ class IndexerTestCase(unittest.TestCase):
         folder = self.root.folder
         self.assertItemsEqual(
             folder.indexer.get_index_entry('Anchor Alpha'),
-            [(u'Alpha', folder.alpha, u'anchor_alpha')])
+            [('Alpha', folder.alpha, 'anchor_alpha')])
 
         with IContainerManager(folder).deleter() as deleter:
             deleter(folder.alpha)
@@ -159,9 +159,9 @@ class IndexerTestCase(unittest.TestCase):
         self.assertEqual(copy.getId(), 'copy_of_indexer')
         self.assertItemsEqual(
             copy.get_index_entry('Anchor Tetra'),
-            [(u'Beta', folder.beta, 'anchor_beta'),
-             (u'Kappa', folder.kappa, 'anchor_kappa'),
-             (u'Kappa', folder.ghost, 'anchor_kappa')])
+            [('Beta', folder.beta, 'anchor_beta'),
+             ('Kappa', folder.kappa, 'anchor_kappa'),
+             ('Kappa', folder.ghost, 'anchor_kappa')])
         self.assertEqual(
             len(list(service.get_references_between(
                         copy, folder.beta))),
@@ -172,12 +172,12 @@ class IndexerTestCase(unittest.TestCase):
             deleter(folder.ghost)
         self.assertItemsEqual(
             folder.indexer.get_index_entry('Anchor Tetra'),
-            [(u'Beta', folder.beta, 'anchor_beta'),
-             (u'Kappa', folder.kappa, 'anchor_kappa')])
+            [('Beta', folder.beta, 'anchor_beta'),
+             ('Kappa', folder.kappa, 'anchor_kappa')])
         self.assertItemsEqual(
             copy.get_index_entry('Anchor Tetra'),
-            [(u'Beta', folder.beta, 'anchor_beta'),
-             (u'Kappa', folder.kappa, 'anchor_kappa')])
+            [('Beta', folder.beta, 'anchor_beta'),
+             ('Kappa', folder.kappa, 'anchor_kappa')])
 
     def test_view(self):
         """Test the public view of an indexer.

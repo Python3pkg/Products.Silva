@@ -25,7 +25,7 @@ def format_date(dt):
 def send_message_to_editors(target, from_userid, subject, text):
     message_service = queryUtility(interfaces.IMessageService)
     if message_service is None:
-        logger.info(u'Message service missing skipping message.')
+        logger.info('Message service missing skipping message.')
         return
     # find out some information about the object and add it to the
     # message
@@ -39,7 +39,7 @@ def send_message_to_editors(target, from_userid, subject, text):
         auth = interfaces.IAuthorizationManager(current)
         authorizations = auth.get_defined_authorizations(
             dont_acquire=True)
-        for identifier, authorization in authorizations.iteritems():
+        for identifier, authorization in authorizations.items():
             if authorization.role == 'ChiefEditor':
                 recipients.append(identifier)
 
@@ -58,7 +58,7 @@ def send_message(target, from_userid, to_userid, subject, text):
         return
     message_service = queryUtility(interfaces.IMessageService)
     if message_service is None:
-        logger.info(u'Message service missing skipping message.')
+        logger.info('Message service missing skipping message.')
         return
     # find out some information about the object and add it to the
     # message
@@ -75,7 +75,7 @@ def send_messages_approved(content, event):
 
     message_service = queryUtility(interfaces.IMessageService)
     if message_service is None:
-        logger.info(u'Message service missing skipping message.')
+        logger.info('Message service missing skipping message.')
         return
 
     now = DateTime()
@@ -94,7 +94,7 @@ def send_messages_approved(content, event):
         expiration_date_str = 'The version will expire at %s\n' % \
                               format_date(expiration_datetime)
     editor = getSecurityManager().getUser().getId()
-    text = u"\nVersion was approved for publication by %s.\n%s%s" % \
+    text = "\nVersion was approved for publication by %s.\n%s%s" % \
             (editor, publication_date_str, expiration_date_str)
 
     message_service.send_message(
@@ -104,7 +104,7 @@ def send_messages_approved(content, event):
 def send_messages_unapproved(content, event):
     # send messages to editor
     author = getSecurityManager().getUser().getId()
-    text = u"\nVersion was unapproved by %s." % author
+    text = "\nVersion was unapproved by %s." % author
     send_message_to_editors(content, author, 'Unapproved', text)
 
     if len(event.status.messages) > 1:
@@ -115,7 +115,7 @@ def send_messages_unapproved(content, event):
                 events.IContentRequestApprovalEvent)
 def send_messages_request_approval(content, event):
     assert len(event.status.messages) >= 1, \
-        u"Event should not have been triggered"
+        "Event should not have been triggered"
     message = event.status.messages[-1]
 
     manager = interfaces.IVersionManager(content)
@@ -135,7 +135,7 @@ def send_messages_request_approval(content, event):
            'The version has a proposed expiration date of %s\n' % \
            format_date(expiration_datetime)
     # send messages
-    text = u"\nApproval was requested by %s.\n%s%s\nMessage:\n%s" % \
+    text = "\nApproval was requested by %s.\n%s%s\nMessage:\n%s" % \
             (message.user_id,
              publication_date_str,
              expiration_date_str,
@@ -152,12 +152,12 @@ def send_messages_request_approval(content, event):
                 events.IContentApprovalRequestWithdrawnEvent)
 def send_messages_content_approval_request_withdrawn(content, event):
     assert len(event.status.messages) >= 2, \
-        u"Event should not have been triggered"
+        "Event should not have been triggered"
     message = event.status.messages[-1]
     original_requester = event.status.messages[-2].user_id
 
     # send messages
-    text = u"\nRequest for approval was withdrawn by %s.\nMessage:\n%s" \
+    text = "\nRequest for approval was withdrawn by %s.\nMessage:\n%s" \
            % (message.user_id, message.message)
     send_message_to_editors(
         content, message.user_id,
@@ -170,11 +170,11 @@ def send_messages_content_approval_request_withdrawn(content, event):
                 events.IContentApprovalRequestRefusedEvent)
 def send_messages_content_approval_request_refused(content, event):
     assert len(event.status.messages) >= 2, \
-        u"Event should not have been triggered"
+        "Event should not have been triggered"
     message = event.status.messages[-1]
     original_requester = event.status.messages[-2].user_id
 
-    text = u"Request for approval was rejected by %s.\nMessage:\n%s" \
+    text = "Request for approval was rejected by %s.\nMessage:\n%s" \
            % (message.user_id, message.message)
     send_message(content, message.user_id, original_requester,
         "Approval rejected by editor", text)

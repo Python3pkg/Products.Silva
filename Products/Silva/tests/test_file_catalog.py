@@ -24,11 +24,10 @@ class DefaultFileCatalogTestCase(unittest.TestCase):
             with self.layer.open_fixture('dark_energy.txt') as data:
                 factory = self.root.manage_addProduct['Silva']
                 factory.manage_addFile(
-                    'universe', u'Not related to Silva', data)
+                    'universe', 'Not related to Silva', data)
 
     def search(self, **kwargs):
-        return map(lambda b: (b.getPath(), b.publication_status),
-                   self.root.service_catalog(**kwargs))
+        return [(b.getPath(), b.publication_status) for b in self.root.service_catalog(**kwargs)]
 
     def test_fulltext(self):
         """Content and title of the file is indexed in its fulltext.
@@ -52,7 +51,7 @@ class DefaultFileCatalogTestCase(unittest.TestCase):
             with self.layer.open_fixture('dark_energy.txt') as data:
                 factory = self.root.manage_addProduct['Silva']
                 factory.manage_addFile(
-                    'universe', u'It is all about updates', data)
+                    'universe', 'It is all about updates', data)
 
         self.assertItemsEqual(
             self.search(fulltext='dark energy'),
@@ -73,7 +72,7 @@ class DefaultFileCatalogTestCase(unittest.TestCase):
             with self.layer.open_fixture('dark_energy.txt') as data:
                 factory = self.root.manage_addProduct['Silva']
                 factory.manage_addFile(
-                    'universe', u'It is all about updates', data)
+                    'universe', 'It is all about updates', data)
 
         self.assertItemsEqual(
             self.search(fulltext='dark energy'),
@@ -102,7 +101,7 @@ class DefaultFileCatalogTestCase(unittest.TestCase):
         """A file is reindexed if it is renamed.
         """
         with CatalogTransaction():
-            self.root.universe.set_title(u'All true in Zope')
+            self.root.universe.set_title('All true in Zope')
             self.root.manage_renameObject('universe', 'renamed_universe')
 
         self.assertItemsEqual(
@@ -116,7 +115,7 @@ class DefaultFileCatalogTestCase(unittest.TestCase):
         """A file whose the title changed is reindexed.
         """
         with Transaction():
-            self.root.universe.set_title(u'All true in Zope')
+            self.root.universe.set_title('All true in Zope')
 
         self.assertItemsEqual(
             self.search(fulltext='silva'),

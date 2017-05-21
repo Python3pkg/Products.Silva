@@ -95,11 +95,11 @@ class ContainerManager(grok.Adapter):
     def __verify_copyable(self, content):
         if not content.cb_isCopyable():
             return ContainerError(
-                _(u"You are unauthorized to copy this content."),
+                _("You are unauthorized to copy this content."),
                 content)
         if content.meta_type not in self.__addables:
             return ContainerError(
-                _(u"You cannot add this content type in this container."),
+                _("You cannot add this content type in this container."),
                 content)
         return None
 
@@ -110,15 +110,15 @@ class ContainerManager(grok.Adapter):
             return error
         if not content.cb_isMoveable():
             return ContainerError(
-                _(u"You are unauthorized to move this content."),
+                _("You are unauthorized to move this content."),
                 content)
         if not  move_check(self.context, content):
             return ContainerError(
-                _(u"You cannot move this content to this container."),
+                _("You cannot move this content to this container."),
                 content)
         if content.meta_type not in self.__addables:
             return ContainerError(
-                _(u"You cannot add this content type in this container."),
+                _("You cannot add this content type in this container."),
                 content)
         return None
 
@@ -168,7 +168,7 @@ class ContainerManager(grok.Adapter):
                     any_moves = True
                 else:
                     result = ContainerError(
-                        _(u"Content already in the target container."),
+                        _("Content already in the target container."),
                         content)
 
             content = yield result
@@ -204,13 +204,13 @@ class ContainerManager(grok.Adapter):
 
             # Update title
             if to_title is not None:
-                if not isinstance(to_title, unicode):
+                if not isinstance(to_title, str):
                     to_title = to_title.decode('utf-8')
                 editable = content.get_editable()
                 if editable is None:
                     if result is None:
                         result = ContentError(
-                            _(u"There is no editable version to set the title on."),
+                            _("There is no editable version to set the title on."),
                             content)
                 elif editable.get_title() != to_title:
                     try:
@@ -272,7 +272,7 @@ class ContainerManager(grok.Adapter):
                     result = content
                 else:
                     result = ContentError(
-                        _(u"Cannot delete content."),
+                        _("Cannot delete content."),
                         content)
             content = yield result
 

@@ -19,17 +19,17 @@ from zope.traversing.browser import absoluteURL
 
 class ITOCRenderingOptions(Interface):
     toc_container = schema.Object(
-        title=u'Container to render', schema=IContainer)
+        title='Container to render', schema=IContainer)
     toc_depth = schema.Int(
-        title=u'TOC depth')
+        title='TOC depth')
     toc_sort_order = schema.TextLine(
-        title=u'TOC sorting order')
+        title='TOC sorting order')
     toc_content_types = schema.List(
-        title=u'TOC content type to show', value_type=schema.TextLine())
+        title='TOC content type to show', value_type=schema.TextLine())
     toc_show_description = schema.Bool(
-        title=u"Show content description")
+        title="Show content description")
     toc_show_icon = schema.Bool(
-        title=u"Show content icon")
+        title="Show content icon")
 
 directlyProvides(ITOCRenderingOptions, ITALNamespaceData)
 
@@ -64,9 +64,9 @@ class TOCRendering(silvaviews.ContentProvider):
         listed in the TOC.
         """
         reverse_sort = self.toc_sort_order.startswith('r')
-        items = filter(
+        items = list(filter(
             is_displayable,
-            container.objectValues(self.toc_content_types))
+            container.objectValues(self.toc_content_types)))
         if self.toc_sort_order in ('alpha','reversealpha'):
             items.sort(
                 key=lambda o: o.get_title_or_id(),
@@ -156,4 +156,4 @@ class TOCRendering(silvaviews.ContentProvider):
             while depth >= 0:
                 html.append('</li></ul>')
                 depth -= 1
-        return u'\n'.join(html)
+        return '\n'.join(html)

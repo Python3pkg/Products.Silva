@@ -18,7 +18,7 @@ class Haunted(grok.Adapter):
     def getHaunting(self):
         service = getUtility(IReferenceService)
         for reference in service.get_references_to(
-            self.context, name=u'haunted'):
+            self.context, name='haunted'):
             yield reference.source.get_silva_object()
 
 

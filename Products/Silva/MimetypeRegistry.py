@@ -32,7 +32,7 @@ class ContentMimetypeRegistry(object):
 
     def unregister(self, factory):
         mimetypes = []
-        for mimetype, spec in self._mimetype_to_factory.items():
+        for mimetype, spec in list(self._mimetype_to_factory.items()):
             currentfactory, extensionname = spec
             if factory is currentfactory:
                 mimetypes.append(mimetype)

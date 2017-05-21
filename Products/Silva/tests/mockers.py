@@ -59,7 +59,7 @@ class MockupAddForm(silvaforms.SMIAddForm):
     """Add form for a Mockup VersionedContent
     """
     grok.context(MockupVersionedContent)
-    grok.name(u'Silva VersionedContent')
+    grok.name('Silva VersionedContent')
 
 
 class MockupEditForm(silvaforms.SMIEditForm):
